@@ -10,6 +10,7 @@ data/*
 # Quarto
 /.quarto/
 **/*.quarto_ipynb
+_freeze
 
 # Editor and system files
 .vscode/

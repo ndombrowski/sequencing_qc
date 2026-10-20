@@ -65,6 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../source/first_look.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -299,6 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <a href="../index.html" class="sidebar-logo-link">
       </a>
       <div class="sidebar-tools-main">
+    <a href="https://github.com/ndombrowski/sequencing_qc" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div>
@@ -388,8 +390,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-the-read-header-tells-you" class="level2">
 <h2 class="anchored" data-anchor-id="what-the-read-header-tells-you">What the read header tells you</h2>
 <p>Every read in a fastq file starts with a header line that begins with <code>@</code>. For Illumina data, the header holds information about where and how the read was sequenced.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The first header line of one practice file</span></span>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The first header line of one practice file</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/Run1_S137_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>It looks something like this:</p>
 <pre><code>@M08325:104:000000000-LT57L:1:1101:15589:1335 1:N:0:GTGTATGCGT</code></pre>
 <p>The parts before the space are separated by <code>:</code>:</p>
@@ -468,9 +472,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p><strong>Exercise:</strong> Look at the first header of a <code>Run1_</code> and a <code>Run2_</code> file. Were they sequenced on the same instrument? In the same run?</p>
 <p><strong>Exercise:</strong> The index at the end is the barcode that was used to sort the read into its sample. Count the indices in the first 1000 reads of a good sample and of a failed sample:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the barcodes in the first 1000 reads (4000 lines) of one file, most common first</span></span>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the barcodes in the first 1000 reads (4000 lines) of one file, most common first</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace the file name to compare different samples</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/Run1_S137_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-4000</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR % 4 == 1'</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span><span class="st">':'</span> <span class="at">-f10</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-rn</span> <span class="kw">|</span> <span class="fu">head</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>What do you notice? (Answer to be written: in good samples, one barcode dominates; in failed samples, the reads are spread over barcodes that differ in one letter.)</p>
 </section>
 <section id="planned-sections" class="level2">
@@ -899,6 +905,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../source/first_look.html" class="pagination-link" aria-label="A first look at your data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">A first look at your data</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

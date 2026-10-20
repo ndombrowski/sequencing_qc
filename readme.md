@@ -1,6 +1,6 @@
 ## First look at your sequencing data
 
-You just received sequencing data. This short tutorial helps you take a first look at it, shortly after receiving it, and decide one thing: does anything look off? To follow the tutorial, please visit [this website](https://ndombrowski.github.io/REPO-NAME/).
+You just received sequencing data. This short tutorial helps you take a first look at it, shortly after receiving it, and decide one thing: does anything look off? To follow the tutorial, please visit [this website](https://ndombrowski.github.io/sequencing_qc/).
 
 To follow this tutorial you do not need to know the command line. You copy and paste a small number of commands, and you look at a few numbers and one report. You first work through all steps with practice data from a real sequencing run with a real problem, and then repeat them with your own data.
 

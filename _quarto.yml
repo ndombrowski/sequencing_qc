@@ -8,9 +8,14 @@ project:
 
 website:
   title: "First look at your sequencing data"
+  page-navigation: true
   sidebar:
     style: "docked"
     search: true
+    # GitHub icon in the sidebar, links to the repository
+    tools:
+      - icon: github
+        href: https://github.com/ndombrowski/sequencing_qc
     contents:
       - index.qmd
       - source/cli_minimum.qmd
@@ -24,3 +29,8 @@ format:
       dark: [cyborg, styles.scss]
     toc: true
     code-copy: true
+
+engine: knitr 
+execute:
+  freeze: auto
+  eval: false

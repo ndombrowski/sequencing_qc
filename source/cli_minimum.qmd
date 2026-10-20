@@ -1,5 +1,6 @@
 ---
 title: "The commands you need"
+engine: knitr
 ---
 
 This page covers the few commands you need for this tutorial. Each command links to the matching section of the [CLI workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html), where you find more explanation and exercises.
@@ -114,7 +115,6 @@ The [practice data](#the-practice-data) comes in one file, `practice_data.tar.gz
 ::: {.callout-warning}
 ## Draft note (remove before publishing)
 
-- The practice data is not online yet. Replace `REPO-NAME` with the name of the repository.
 - `curl -L -O` and `tar -xzf` are not tested yet in MobaXterm and on a Mac.
 :::
 
@@ -122,7 +122,7 @@ The [practice data](#the-practice-data) comes in one file, `practice_data.tar.gz
 # On my computer, inside seq_qc_practice: download the practice data
 # -L: if the link sends you on to another address, follow it
 # -O: save the file under its own name, practice_data.tar.gz
-curl -L -O "https://raw.githubusercontent.com/ndombrowski/REPO-NAME/main/data/practice_data.tar.gz"
+curl -L -O "https://raw.githubusercontent.com/ndombrowski/sequencing_qc/main/data/practice_data.tar.gz"
 
 # Check: you should see practice_data.tar.gz, with a size of about 11M (11 megabytes)
 ls -lh

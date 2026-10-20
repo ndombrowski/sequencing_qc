@@ -1,5 +1,6 @@
 ---
 title: "Deeper dive (optional)"
+engine: knitr
 ---
 
 ::: {.callout-warning}
@@ -14,7 +15,7 @@ This page is for those who want to understand their data better, or who found a 
 
 Every read in a fastq file starts with a header line that begins with `@`. For Illumina data, the header holds information about where and how the read was sequenced.
 
-```bash
+```{bash}
 # The first header line of one practice file
 zcat data/Run1_S137_R1.fastq.gz | head -1
 ```
@@ -48,7 +49,7 @@ The parts after the space:
 
 **Exercise:** The index at the end is the barcode that was used to sort the read into its sample. Count the indices in the first 1000 reads of a good sample and of a failed sample:
 
-```bash
+```{bash}
 # Count the barcodes in the first 1000 reads (4000 lines) of one file, most common first
 # Replace the file name to compare different samples
 zcat data/Run1_S137_R1.fastq.gz | head -4000 | awk 'NR % 4 == 1' | cut -d':' -f10 | sort | uniq -c | sort -rn | head
