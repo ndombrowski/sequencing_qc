@@ -1,0 +1,27 @@
+# Notes for working on the tutorial, not part of the site
+CLAUDE.md
+PLAN.md
+.claude/settings.local.json
+
+# Data: ignore everything in data/, except the practice data
+data/*
+!data/practice_data.tar.gz
+
+# Quarto
+/.quarto/
+**/*.quarto_ipynb
+
+# Editor and system files
+.vscode/
+.DS_Store
+/tmp/
+
+# Trial runs
+seq_qc_practice
+_tests/
+
+# R history and session files
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata

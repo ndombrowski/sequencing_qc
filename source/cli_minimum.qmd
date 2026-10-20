@@ -1,0 +1,268 @@
+---
+title: "The commands you need"
+---
+
+This page covers the few commands you need for this tutorial. Each command links to the matching section of the [CLI workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html), where you find more explanation and exercises.
+
+On this page, you work on **your own computer**. You download a small set of practice data and try every command on it. On the next page, [A first look at your data](first_look.qmd), you copy the same practice data to Crunchomics and do the full check. After that, you repeat the check with your own data.
+
+If you have never opened a terminal, first follow [Before you start](https://ndombrowski.github.io/cli_workshop/source/installation.html) of the CLI workshop. On Windows, use a local terminal in MobaXterm. On a Mac, use the Terminal app, which you find in Applications, in the Utilities folder. The Mac terminal uses a slightly different shell (zsh), the program that reads your commands. So a few error messages may look a bit different from the ones on this page.
+
+If something goes wrong, see [Getting unstuck](#getting-unstuck) at the bottom of this page.
+
+## The practice data
+
+The practice data comes from an ITS (a DNA region used to identify fungi) amplicon sequencing project from different soil samples. It comes from two real sequencing runs, Run1 and Run2, and it has a real problem that you find on the next page. The sample IDs are randomized, and every file was reduced to 2% of its reads to keep it small.
+
+You get 32 samples. The data is **paired-end**: the sequencer reads each DNA fragment from both ends. So every sample has two files:
+
+- `..._R1.fastq.gz`: the reads from one end of the fragments (the forward reads).
+- `..._R2.fastq.gz`: the reads from the other end (the reverse reads).
+
+In total, that makes 64 files. A `.fastq` file is a text file that holds every read, with a quality score for each base. The `.gz` at the end means that the file is compressed to save space.
+
+The practice data also contains `seqkit_stats_practice.tsv`. This is a table with the number of reads per file, for all samples of the original two runs. You look at it further down this page.
+
+## The terminal and the prompt
+
+In the terminal, you type a command and press Enter. The computer runs it and prints the result as text. When the computer is ready for the next command, it shows the **prompt**, a line that usually ends with `$`.
+
+A few things that make life easier:
+
+- **Copy and paste.** In many terminals, Ctrl+C does not copy, because Ctrl+C stops a command (see below). Use the right mouse button instead, or Ctrl+Shift+C and Ctrl+Shift+V. This differs between terminals, so try it once.
+- **Tab completion.** Type the first letters of a file or folder name and press Tab. The terminal completes the name for you. This saves typing and avoids typos.
+- **Arrow up.** Press the up arrow to get your previous commands back.
+- **Comments.** Everything after a `#` is a comment. The computer ignores it. In this tutorial, every command comes with a comment that says what it does. You can paste the comments along with the commands.
+
+## `pwd`: where am I?
+
+```{bash}
+# On my computer: print the folder you are in right now
+pwd
+```
+
+When you open a new terminal, you start in your **home folder**. The path that `pwd` prints differs between computers. A **path** is the address of a folder, with folder names separated by `/`. The [CLI workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#pwd-find-out-where-we-are) explains where your home folder is.
+
+## `ls`: what is in this folder?
+
+```{bash}
+# On my computer: list the files and folders in the current folder
+ls
+
+# The same, with more details: size, date, owner
+# Options used with ls: 
+# -l long list with details, -h sizes in K/M/G
+ls -lh
+```
+
+More: [ls in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#ls-list-the-contents-of-a-directory)
+
+## `mkdir`: make a folder
+
+::: {.callout-important title="MobaXterm users: did you choose a permanent folder?" collapse="false"}
+MobaXterm can use a temporary home folder. Then it deletes your files when you close it. Before you continue, check this with the steps in [Windows + MobaXterm: choose a permanent folder](https://ndombrowski.github.io/cli_workshop/source/installation.html#windows-mobaxterm-choose-a-permanent-folder) on the "Before you start" page of the CLI workshop.
+:::
+
+```{bash}
+# On my computer, in your home folder: make a folder for the practice data
+mkdir seq_qc_practice
+
+# Check: you should see seq_qc_practice in the list
+ls -l
+```
+
+More: [mkdir in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#mkdir-make-new-folders)
+
+## `cd`: move into a folder
+
+```{bash}
+# On my computer: move into the seq_qc_practice folder
+cd seq_qc_practice
+
+# Check: the path should now end in seq_qc_practice
+pwd
+```
+
+A few more ways to use `cd`. Try them, and then go back into `seq_qc_practice`:
+
+```{bash}
+# Move one folder up
+cd ..
+
+# Check where you are now 
+pwd
+
+# Move back to your home folder, from anywhere
+cd
+
+# Check where you are now 
+pwd
+
+# Go back into the practice folder: ~ is short for your home folder
+cd ~/seq_qc_practice
+pwd
+```
+
+After every `cd`, check where you are with `pwd`. Most errors in this tutorial come from running a command in the wrong folder.
+
+More: [cd in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#cd-move-around-folders)
+
+## Get the practice data: `curl` and `tar`
+
+The [practice data](#the-practice-data) comes in one file, `practice_data.tar.gz`. A `.tar.gz` file packs many files into one and compresses them, similar to a `.zip` file.
+
+::: {.callout-warning}
+## Draft note (remove before publishing)
+
+- The practice data is not online yet. Replace `REPO-NAME` with the name of the repository.
+- `curl -L -O` and `tar -xzf` are not tested yet in MobaXterm and on a Mac.
+:::
+
+```{bash}
+# On my computer, inside seq_qc_practice: download the practice data
+# -L: if the link sends you on to another address, follow it
+# -O: save the file under its own name, practice_data.tar.gz
+curl -L -O "https://raw.githubusercontent.com/ndombrowski/REPO-NAME/main/data/practice_data.tar.gz"
+
+# Check: you should see practice_data.tar.gz, with a size of about 11M (11 megabytes)
+ls -lh
+
+# Unpack it: -x extract, -z it is compressed (.gz), -f the file name follows
+tar -xzf practice_data.tar.gz
+
+# Check what changed
+# you should see data, practice_data.tar.gz and seqkit_stats_practice.tsv
+ls
+
+# Check the inside of the newly generated data folder 
+# you should see one folder per sample, with names like Run1_S137 (you learn how to count the number of files later)
+ls data 
+
+# Look inside one sample folder: you should see the R1 and R2 file of that sample
+ls data/Run1_S137
+```
+
+The `data` folder contains several folders, one per sample. Each sample folder holds the sequencing files of that sample. Many sequencing centers deliver data like this. One good first sanity check is to count the number of folders or files you have per sample. Let's learn how to do this next.
+
+**Keep `practice_data.tar.gz`.** You copy it to Crunchomics on the next page.
+
+## Wildcards: `*`
+
+A `*` in a file name means "any text". This lets you select many files at once.
+
+```{bash}
+# Look for R1 files directly in data: data/*_R1.fastq.gz matches every file in data that ends in _R1.fastq.gz
+# You get "No such file or directory": the files are one level deeper, in the sample folders
+ls data/*_R1.fastq.gz
+
+# Look one level deeper: the first * stands for any folder name in data
+ls data/*/*_R1.fastq.gz
+```
+
+The last command lists 32 files, from `data/Run1_S137/Run1_S137_R1.fastq.gz` to `data/Run2_ITS100/Run2_ITS100_R1.fastq.gz`.
+
+More: [wildcards in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#wildcards)
+
+## Counting: `wc -l` and the pipe `|`
+
+`wc -l` counts lines. The pipe `|` sends the output of one command into the next command. Together, they let you count things, for example the number of files:
+
+```{bash}
+# On your computer, inside seq_qc_practice
+# Count the fastq.gz files in the sample folders: 
+# when ls sends its output into a pipe, it prints one name per line, and wc -l counts the lines
+# Expected: 64
+ls data/*/*.fastq.gz | wc -l
+
+# Count only the R1 files. Expected: 32
+ls data/*/*_R1.fastq.gz | wc -l
+```
+
+You will use this a lot. After each step, you count what you have and compare it with what you expect. For now the command tells us that you work with a total of 64 files from 32 samples. That is what we would have expected and we can therefore proceed. 
+
+If you ever see fewer samples than what you expect then this often means an incomplete download. To check this, download the file again and repeat the steps from above to see whether this recovers your files.
+
+More: [wc](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#wc-count-things) and [pipes](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#pipes) in the workshop
+
+## Looking at files: `head` and `less`
+
+`seqkit_stats_practice.tsv` is a table with the number of reads in every file of the original sequencing runs. A `.tsv` file is a table where tabs separate the columns. You make a table like this yourself on the next page.
+
+```{bash}
+# On my computer, inside seq_qc_practice
+# Show the first 10 lines of the table
+head seqkit_stats_practice.tsv
+
+# Count the lines. Expected: 729 (one header line and 728 files)
+wc -l seqkit_stats_practice.tsv
+
+# Scroll through the whole table. Use the arrow keys, and press q to quit
+# -S keeps long lines on one line, so tables stay readable
+less -S seqkit_stats_practice.tsv
+```
+
+In this file you work with 728 files, not 64. That is because the table covers all 364 samples of the original runs, and the practice data is 32 of them.
+
+The first line of `seqkit_stats_practice.tsv` is the header, with the column names. The fourth column, `num_seqs`, is the number of reads in each file.
+
+More: [head](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#head-view-the-first-lines-of-a-file) and [less](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#less-view-the-full-file) in the workshop
+
+## Tidy up: `mv` and `rmdir`
+
+`mv` moves files. Here, you move all fastq.gz files out of the sample folders, directly into `data`. The `mv` command is handy whenever you want to re-organize data for a cleaner folder structure.
+
+::: {.callout-warning}
+## Draft note (remove before publishing)
+
+`mv -n` and `rmdir data/*/` were tested in Git Bash on Windows (2026-10-20) and on WSL, not yet in MobaXterm, on a Mac or on Crunchomics. In the Windows test, `rmdir` failed once with `Device or resource busy` on one folder. This is probably a Windows file lock, not a problem with the command (not verified).
+:::
+
+::: {.callout-important title="Important: mv also renames" collapse="false"}
+If the last name in an `mv` command is not an existing folder, `mv` renames your file to that name. For example, with a typo, `mv sample_R1.fastq.gz dta` renames the file to `dta`. To prevent this, end a folder name with `/`, as in `data/`. Then `mv` stops with an error if the folder does not exist.
+:::
+
+```{bash}
+# On your computer, inside seq_qc_practice
+# Move all fastq.gz files from the sample folders up into the data folder
+# -n: never overwrite a file that already exists in data
+mv -n data/*/*.fastq.gz data/
+
+# Check: count the fastq.gz files directly in data. Expected: 64
+ls data/*.fastq.gz | wc -l
+
+# Check: count the fastq.gz files left in the sample folders. Expected: 0
+# You also see "ls: cannot access ... No such file or directory". That is fine: there are no files left to list
+ls data/*/*.fastq.gz | wc -l
+```
+
+More: [mv in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#mv-moving-and-renaming-data)
+
+The sample folders are now empty. `rmdir` removes empty folders. It never removes a folder that still contains files, so it is a safe way to clean up:
+
+```{bash}
+# On my computer, inside seq_qc_practice
+# Remove the empty sample folders: data/*/ matches every folder in data
+rmdir data/*/
+
+# Check: look at the first names, and count everything in data
+# Expected: only fastq.gz files, 64 in total
+ls data | head
+ls data | wc -l
+```
+
+If a sample folder still contains a file, `rmdir` says `Directory not empty` and keeps that folder. Look inside with `ls` to see what is left.
+
+## Getting unstuck
+
+- **A command does not finish, or the prompt does not come back:** press Ctrl+C to stop it.
+- **The prompt changes to `>` (or `dquote>` on a Mac) and nothing happens:** the terminal waits for the rest of a command. This often happens when a quote `"` is missing, for example when you copied only part of a line. Press Ctrl+C, then copy and paste the whole command again.
+- **`command not found`:** the computer does not know this command. Check the spelling. On your own computer, it can also mean that the tool is not installed.
+- **Nothing is printed:** for many commands, such as `mkdir`, `cd` and `mv`, no output means that the command worked. Use `ls` or `pwd` to check the result.
+- **An error message:** read it. It usually says what went wrong, for example `No such file or directory` means the file name is wrong, or you are in the wrong folder (check with `pwd` and `ls`).
+
+
+More: [error messages and Ctrl+C in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#error-messages-and-ctrlc-getting-unstuck)
+
+## Next
+
+Go to [A first look at your data](first_look.qmd). Keep your terminal open, or remember that your practice data is in `~/seq_qc_practice`.

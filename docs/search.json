@@ -1,0 +1,302 @@
+[
+  {
+    "objectID": "source/first_look.html",
+    "href": "source/first_look.html",
+    "title": "A first look at your data",
+    "section": "",
+    "text": "On this page, you copy data to Crunchomics, count the reads in every sample, make a quality report, and decide whether something looks off.\nYou do this twice. First with the practice data from The commands you need. Then you repeat the same steps with your own data, as explained in Now your own data.\nTwo kinds of boxes on this page are closed. Open them only when you need them:\nKeep notes as you go. Copy each command you run into a text file, with a few words about what you saw. The CLI workshop explains how. If something looks off and you ask someone for help later, these notes help a lot.",
+    "crumbs": [
+      "A first look at your data"
+    ]
+  },
+  {
+    "objectID": "source/first_look.html#step-1-log-in-and-make-a-practice-folder",
+    "href": "source/first_look.html#step-1-log-in-and-make-a-practice-folder",
+    "title": "A first look at your data",
+    "section": "Step 1: Log in and make a practice folder",
+    "text": "Step 1: Log in and make a practice folder\n# On my computer: log in to Crunchomics (on eduroam or with the VPN)\n# Replace uvanetid with your own UvAnetID\n# You won't see your anything happening when you type your password, that is normal\nssh uvanetid@omics-h0.science.uva.nl\nIf this is your first time on Crunchomics, set up your account once, as explained in the CLI workshop:\nNow make a practice folder in your personal folder, with a data folder for the sequencing files and a results folder for everything you make:\n# On Crunchomics: go to your personal folder (500 GB of space)\ncd ~/personal\n\n# Make the practice folder with a data and a results folder inside\n# The `-p` also makes seq_qc_practice if it does not exist yet, and gives no error if it already exists\nmkdir -p seq_qc_practice/data seq_qc_practice/results\n\n# Move into the practice folder\ncd seq_qc_practice\n\n# Check: you should be in /home/uvanetid/personal/seq_qc_practice, and see data and results\npwd\nls\nFrom now on, run every command on Crunchomics from inside the seq_qc_practice folder. If you log out and in again, first go back with cd ~/personal/seq_qc_practice.",
+    "crumbs": [
+      "A first look at your data"
+    ]
+  },
+  {
+    "objectID": "source/first_look.html#step-2-copy-the-practice-data-to-crunchomics",
+    "href": "source/first_look.html#step-2-copy-the-practice-data-to-crunchomics",
+    "title": "A first look at your data",
+    "section": "Step 2: Copy the practice data to Crunchomics",
+    "text": "Step 2: Copy the practice data to Crunchomics\nYou copy practice_data.tar.gz from your own computer to Crunchomics with scp. This is the same command you can use later for your own data.\nOpen a second terminal on your own computer. Keep the first one logged in to Crunchomics. In the second terminal:\n# On my computer: go to the practice folder in your home folder\ncd ~/seq_qc_practice\n\n# Copy the practice data into the practice folder on Crunchomics\n# Replace both instances of uvanetid with your UvAnetID\nscp practice_data.tar.gz uvanetid@omics-h0.science.uva.nl:/home/uvanetid/personal/seq_qc_practice/\nMore about scp, also for Mac users: scp in the CLI workshop.\n\n\n\n\n\n\nTipTip: Download the practice data directly onto Crunchomics (optional)\n\n\n\n\n\nIf you did not download the practice data on your own computer, download it directly onto Crunchomics instead:\n# On Crunchomics, inside seq_qc_practice: download the practice data\ncurl -L -O \"https://raw.githubusercontent.com/ndombrowski/REPO-NAME/main/data/practice_data.tar.gz\"\n\n\n\nNow go back to the terminal that is logged in to Crunchomics, and unpack the file:\n# On Crunchomics, inside seq_qc_practice\n# Check: is practice_data.tar.gz there, and how large is it?\nls -lh\n\n# Unpack it: -x extract, -z it is compressed (.gz), -f the file name follows\ntar -xzf practice_data.tar.gz\n\n# Check: which files and folders do you see now?\nls -lh\n\n\n\n\n\n\nAnswerPractice data: compare with your result\n\n\n\n\n\n\nBefore unpacking: practice_data.tar.gz, with a size of about 11M (11 megabytes), and the empty data and results folders.\nAfter unpacking: data, results, practice_data.tar.gz and seqkit_stats_practice.tsv.\n\n\n\n\nThe practice data has two parts:\n\nA small set of fastq files in data, in one folder per sample (32 samples, each reduced to 2% of its reads). You use them to try the tools in Steps 3 and 5.\nseqkit_stats_practice.tsv: the full read-count table of the original runs (364 samples). You use it for the read-count check in Step 4.\n\n\nMove the files out of the sample folders\nAs on your own computer, move the fastq.gz files directly into data and remove the empty sample folders. See Tidy up: mv and rmdir if you need a reminder.\n# On Crunchomics, inside seq_qc_practice\n# Count the fastq.gz files in the sample folders\nls data/*/*.fastq.gz | wc -l\n\n# Move them up into the data folder. -n: never overwrite a file that already exists\nmv -n data/*/*.fastq.gz data/\n\n# Count the fastq.gz files directly in data: the same number as before\nls data/*.fastq.gz | wc -l\n\n# Remove the empty sample folders. rmdir only removes empty folders\nrmdir data/*/\n\n# Check: data should now contain only fastq.gz files\nls data | head\nls data | wc -l\n\n\n\n\n\n\nAnswerPractice data: compare with your result\n\n\n\n\n\n\n64 fastq.gz files in the sample folders, and 64 directly in data after mv.\nAfter rmdir, ls data | wc -l also gives 64: no folders are left.\n\n\n\n\n\n\nCheck: are all files there?\nThe fastq.gz files should sit directly in the data folder. With paired-end sequencing, each sample has one R1 and one R2 file.\n# Look at the first file names\nls data | head\n\n# Count all fastq.gz files\nls data/*.fastq.gz | wc -l\n\n# Count the R1 and the R2 files: these numbers should be the same\nls data/*_R1*.fastq.gz | wc -l\nls data/*_R2*.fastq.gz | wc -l\n\n\n\n\n\n\nAnswerPractice data: compare with your result\n\n\n\n\n\n64 fastq.gz files: 32 R1 files and 32 R2 files. So the practice data has 32 samples.",
+    "crumbs": [
+      "A first look at your data"
+    ]
+  },
+  {
+    "objectID": "source/first_look.html#step-3-count-reads-with-seqkit",
+    "href": "source/first_look.html#step-3-count-reads-with-seqkit",
+    "title": "A first look at your data",
+    "section": "Step 3: Count reads with seqkit",
+    "text": "Step 3: Count reads with seqkit\nseqkit stats makes one table with the number of reads and their quality for every file. It is installed on Crunchomics. The CLI workshop explains the options in detail.\n# On Crunchomics, inside seq_qc_practice\nmkdir -p results/seqkit\n\n# Run seqkit stats on a compute node, with 4 CPUs\nsrun --cpus-per-task=4 --mem=8G --time=01:00:00 \\\n    seqkit stats -b -a -T -j 4 -o results/seqkit/seqkit_stats.tsv data/*.fastq.gz\n\n# Check: one header line plus one line per fastq.gz file\nwc -l results/seqkit/seqkit_stats.tsv\n\n# Look at the table. Use the arrow keys to scroll, and q to quit\ncolumn -t results/seqkit/seqkit_stats.tsv | less -S\nThe \\ at the end of the srun line means “the command continues on the next line”. Copy both lines together.\nThe most important column for now is num_seqs, the number of reads in each file. Scroll through it. Do you see files with far fewer reads than the others?\n\n\n\n\n\n\nAnswerPractice data: compare with your result\n\n\n\n\n\n65 lines: one header line and 64 files.\nMost Run1_ samples up to Run1_S152 have about 1,000 to 2,700 reads. From Run1_S153 on, the samples have between 0 and 18 reads, and Run1_S154 has none at all. The three Run2_ samples have about 550 reads each.\n\n\n\nThese numbers are small because every file was reduced to 2% of its reads. With these reduced files, almost every sample would fall below the 1,000-read flag in Step 4. That is why you use the full practice table in Step 4.",
+    "crumbs": [
+      "A first look at your data"
+    ]
+  },
+  {
+    "objectID": "source/first_look.html#step-4-the-read-count-check",
+    "href": "source/first_look.html#step-4-the-read-count-check",
+    "title": "A first look at your data",
+    "section": "Step 4: The read-count check",
+    "text": "Step 4: The read-count check\nThis is the most important step. You look for samples with far fewer reads than the rest.\nIn this step, you use the full practice table, seqkit_stats_practice.tsv, with all 364 samples of the original runs.\n\n4a: R1 and R2 have the same number of reads\nFor paired-end data, every read in the R1 file has a partner in the R2 file. So both files of a sample must have the same number of reads.\n# On Crunchomics, inside seq_qc_practice\n# The read numbers of all R1 files, and of all R2 files, in the same order\ngrep \"_R1\" seqkit_stats_practice.tsv | cut -f4 &gt; results/seqkit/r1_counts.txt\ngrep \"_R2\" seqkit_stats_practice.tsv | cut -f4 &gt; results/seqkit/r2_counts.txt\n\n# Put them side by side and count the lines where they differ. We expect 0\npaste results/seqkit/r1_counts.txt results/seqkit/r2_counts.txt | awk '$1 != $2' | wc -l\n\n\n\n\n\n\nAnswerPractice data: compare with your result\n\n\n\n\n\n0: R1 and R2 have the same number of reads in every sample.\n\n\n\n\n\n\n\n\n\nFixIf the result is not 0: what to check\n\n\n\n\n\nSome files may be incomplete. This often happens when a download or a copy breaks off halfway. Test whether the files are complete:\n# Test every fastq.gz file. gzip -t prints nothing if a file is complete,\n# and an error message (for example \"unexpected end of file\") if it is not\nfor f in data/*.fastq.gz; do\n    echo \"$f\"\n    gzip -t \"$f\"\ndone\nDownload or copy the broken files again, and run Steps 3 and 4 again. If the new files are still broken, contact the sequencing center.\n\n\n\n\n\n4b: Reads per sample, from low to high\nFrom now on, we only use the R1 files, so that each sample is counted once.\n# Take the file name (column 1) and the number of reads (column 4) of all R1 files,\n# and sort from the lowest to the highest number of reads\ncut -f1,4 seqkit_stats_practice.tsv | grep \"_R1\" | sort -t$'\\t' -k2,2n &gt; results/read_counts.tsv\n\n# Check: one line per sample\nwc -l results/read_counts.tsv\n\n# The 10 samples with the fewest reads, and the 5 with the most\nhead results/read_counts.tsv\ntail -5 results/read_counts.tsv\n\n\n\n\n\n\nAnswerPractice data: compare with your result\n\n\n\n\n\n364 lines, one per sample. The samples with the fewest reads have only 10 to 40 reads. The samples with the most reads have more than 150,000.\n\n\n\n\n\n4c: One sequencing run at a time\nSequencing runs differ in how many reads they give, so you check each run on its own. The practice table contains two runs. The file names start with the run (Run1_ or Run2_), so you can split the table by name:\n# One read-count file per run\n# The ^ means \"at the start of the line\"\ngrep \"^Run1_\" results/read_counts.tsv &gt; results/read_counts_run1.tsv\ngrep \"^Run2_\" results/read_counts.tsv &gt; results/read_counts_run2.tsv\n\n# Check: the number of samples per run\nwc -l results/read_counts_run1.tsv results/read_counts_run2.tsv\n\n\n\n\n\n\nAnswerPractice data: compare with your result\n\n\n\n\n\n240 samples in run 1 and 124 in run 2. Together, that is the 364 samples from 4b.\n\n\n\n\n\n4d: Which samples have very few reads?\nWe flag a sample if it has fewer than 10% of the median number of reads, or fewer than 1,000 reads. The median is the read number of the sample in the middle of the sorted list. Unlike the average, it is not pulled down by a few failed samples.\nYou run these commands twice: once for run 1 and once for run 2. So you first store the name of the file to check in a variable. A variable stores a piece of text under a short name. $counts then stands for that text. To check run 2 later, you only change this one line. More: variables in the CLI workshop.\nStart with run 1:\n# The read-count file to check\ncounts=results/read_counts_run1.tsv\n\n# The median: the read number on the middle line of the sorted file\nn_samples=$(wc -l &lt; \"$counts\")\nmiddle=$(( (n_samples + 1) / 2 ))\nmedian=$(sed -n \"${middle}p\" \"$counts\" | cut -f2)\nlimit=$(( median / 10 ))\necho \"samples: $n_samples  median: $median  10% of median: $limit\"\n\n# Flag 1: how many samples have fewer reads than 10% of the median?\nawk -F'\\t' -v limit=\"$limit\" '$2 &lt; limit' \"$counts\" | wc -l\n\n# Flag 2: how many samples have fewer than 1000 reads?\nawk -F'\\t' '$2 &lt; 1000' \"$counts\" | wc -l\n\n\n\n\n\n\nAnswerPractice data: compare with your result (run 1)\n\n\n\n\n\n240 samples, a median of 95,605 reads and a limit of 9,560. 102 samples fall below the limit, and 101 have fewer than 1,000 reads.\n\n\n\n\n\n4e: Do the flagged samples form a pattern?\nA few scattered samples with low reads are normal: some samples simply contain little DNA. A block of samples with consecutive numbers is a warning sign. It points to a problem with a group of samples that were handled together, for example one part of a plate.\n# The flagged samples, sorted by name instead of by reads\n# sort -V sorts numbers in names the way people do (S9 before S10)\nawk -F'\\t' -v limit=\"$limit\" '$2 &lt; limit' \"$counts\" | sort -V | column -t\n\n\n\n\n\n\nAnswerPractice data: compare with your result (run 1)\n\n\n\n\n\nThe flagged samples form clear blocks: Run1_S057 to Run1_S095, Run1_S153 to Run1_S191 and Run1_S249 to Run1_S280. The samples were on three 96-well plates, and on every plate, columns 8 to 12 failed. This is a clear reason to go through the checklist in Step 6.\n\n\n\n\n\n4f: Blanks and controls\nBlanks (negative controls) should have clearly fewer reads than your samples. The command looks for common names for controls:\n# Lines with blank, neg, ntc, control or mock in the name (upper or lower case)\ngrep -i -E \"blank|neg|ntc|control|mock\" \"$counts\"\nA blank with as many reads as a normal sample can mean contamination. A positive control (for example a mock community) with very few reads can mean that the PCR did not work well.\n\n\n\n\n\n\nAnswerPractice data: compare with your result (run 1)\n\n\n\n\n\nNothing. Run 1 of the practice data has no controls.\n\n\n\n\n\n4g: Repeat for run 2\nNow set counts to the run 2 file, and run the commands of 4d, 4e and 4f again:\n# The read-count file of run 2\ncounts=results/read_counts_run2.tsv\n\n\n\n\n\n\nAnswerPractice data: compare with your result (run 2)\n\n\n\n\n\n124 samples, a median of 29,236 reads and a limit of 2,923. 6 samples fall below the limit, and 3 have fewer than 1,000 reads.\nOf the 6, three are blanks, which is expected. The other three (Run2_ITS097, Run2_ITS175, Run2_ITS178) are scattered, with 1,000 to 2,500 reads. That is worth a note, but not alarming.\nOne blank, Run2_ITS191_PCR_Blank, has 4,561 reads, which is high for a blank. Worth mentioning.",
+    "crumbs": [
+      "A first look at your data"
+    ]
+  },
+  {
+    "objectID": "source/first_look.html#step-5-quality-reports-with-fastqc",
+    "href": "source/first_look.html#step-5-quality-reports-with-fastqc",
+    "title": "A first look at your data",
+    "section": "Step 5: Quality reports with FastQC",
+    "text": "Step 5: Quality reports with FastQC\nFastQC makes a quality report for every fastq file. You can look at these reports one by one, or combine all of them into one report with MultiQC. MultiQC is easier when you have many samples, but you need to install it once (5b). If you do not want to install anything, look at a few FastQC reports instead (5c).\n\n5a: FastQC\nFastQC is installed on Crunchomics.\n# On Crunchomics, inside seq_qc_practice\nmkdir -p results/fastqc\n\n# Run FastQC on all fastq.gz files, on a compute node with 8 CPUs\nsrun --cpus-per-task=8 --mem=16G --time=02:00:00 \\\n    fastqc data/*.fastq.gz -o results/fastqc --threads 8\n\n# Check: one html report per fastq.gz file, so these two numbers should be the same\nls results/fastqc/*.html | wc -l\nls data/*.fastq.gz | wc -l\nAs a rough guide, about 700 files from a MiSeq amplicon run took about 20 minutes with 10 CPUs. Small runs, like the practice data, finish in a few minutes.\n\n\n\n\n\n\nAnswerPractice data: compare with your result\n\n\n\n\n\n64 html reports and 64 fastq.gz files.\n\n\n\n\n\n5b: Option 1, one combined report with MultiQC\nMultiQC is not installed on Crunchomics for everyone, so you install it yourself with conda. Conda is a program that installs software into separate environments: folders with one tool and everything it needs, so that tools do not get in each other’s way. You only do this once. Afterwards, you can use MultiQC for every new sequencing run.\n\n\n\n\n\n\nTipTip: Install MultiQC (only needed once)\n\n\n\n\n\n\nInstall conda. Follow the steps in Install Miniforge in the CLI workshop. If you already use conda on Crunchomics, skip this step.\nMake an environment with MultiQC:\n\n# On Crunchomics: make an environment called multiqc_1.35 and install MultiQC version 1.35 into it\n# Press Y and Enter when mamba asks you to confirm\nmamba create -n multiqc_1.35 -c conda-forge -c bioconda multiqc=1.35\n\nCheck that it works:\n\n# Activate the environment, print the MultiQC version, and leave the environment again\nconda activate multiqc_1.35\nmultiqc --version\nconda deactivate\nThis should print the version, 1.35. More about environments: mamba create in the CLI workshop.\n\n\n\nNow make the report:\n# On Crunchomics, inside seq_qc_practice: make one report from all FastQC reports\nmkdir -p results/multiqc\nconda activate multiqc_1.35\nsrun --cpus-per-task=1 --mem=4G --time=00:30:00 multiqc results/fastqc -o results/multiqc\nconda deactivate\n\n# Check: the folder should contain multiqc_report.html\nls -lh results/multiqc\nCopy the report to your own computer. Run this in a terminal on your own computer:\n# On my computer: copy the MultiQC report into the current folder\n# Replace both instances of uvanetid with your UvAnetID\nscp uvanetid@omics-h0.science.uva.nl:/home/uvanetid/personal/seq_qc_practice/results/multiqc/multiqc_report.html .\nThen double-click multiqc_report.html to open it in your browser.\n\n\n5c: Option 2, a few FastQC reports\nWithout MultiQC, you look at the FastQC reports one by one. With many samples, you do not need to look at all of them. Pick a few that tell you the most:\n\nTwo or three typical samples, with a read number close to the median\nThe samples with the fewest reads, especially if they were flagged in Step 4\nYour blanks and controls\n\nFor the practice data, compare a good sample, Run1_S137_R1_fastqc.html, with a failed one, Run1_S158_R1_fastqc.html (10 reads), and with the empty Run1_S154_R1_fastqc.html. The FastQC report of a file has the same name as the file, but ends in _fastqc.html instead of .fastq.gz.\nCopy the reports to your own computer. Run this in a terminal on your own computer, once per report:\n# On my computer: copy one FastQC report into the current folder\n# Replace both instances of uvanetid with your UvAnetID, and the file name with the report you want\nscp uvanetid@omics-h0.science.uva.nl:/home/uvanetid/personal/seq_qc_practice/results/fastqc/Run1_S137_R1_fastqc.html .\nThen double-click the html file to open it in your browser. Open a typical sample first, so that you know what “normal” looks like for your data, and then compare the others with it.\n\n\n5d: What to look at in the reports\nFastQC and MultiQC mark many things in yellow or red. For amplicon data, much of that is normal. Focus on whether some samples look clearly different from the rest.\nUsually normal for amplicon data (no need to worry):\n\nPer base sequence content fails: all reads start with the same primer, so the first bases are the same in every read\nSequence duplication is high, and overrepresented sequences are listed: amplicons are many copies of a few sequences. The overrepresented sequences often start with your primer\nPer sequence GC content does not look like a smooth bell curve: the GC content depends on which organisms are in the sample\nQuality goes down towards the end of the reads, more in R2 than in R1. Long reads (for example 2x300 bp on a MiSeq) often end in the yellow or red zone\nSome adapter content at the end of the reads, if your amplicon is shorter than the read length\n\nWorth a closer look:\n\nSequence counts: samples with far fewer reads than the rest (you already checked this in Step 4)\nA group of samples with clearly lower quality than all others\nReports with Total Sequences 0: the file is empty. FastQC still makes a report, but the plots are empty and values like “File type: null” mean nothing\nQuality that is low already at the start of the reads, in many samples\n\nSamples with very few reads often also look worse in the quality plots. That is usually a side effect of having few reads, not a separate problem. The read-count check from Step 4 is the more reliable signal.",
+    "crumbs": [
+      "A first look at your data"
+    ]
+  },
+  {
+    "objectID": "source/first_look.html#step-6-decide",
+    "href": "source/first_look.html#step-6-decide",
+    "title": "A first look at your data",
+    "section": "Step 6: Decide",
+    "text": "Step 6: Decide\nAlso read the delivery report. Many sequencing centers send a report with the read number per sample, and sometimes a warning about low samples. You do not need the command line for that, and it is easy to miss in a long email.\nIf nothing stands out: good news. Write down the date and the main numbers (number of samples, median reads, number of flagged samples) in your notes, and continue with your analysis.\nIf something stands out, act now. Most problems can still be explained or fixed in the first weeks: the leftover DNA and libraries still exist, and people still remember what they did. Open the box below that matches your problem. Each box says what to check and who to contact.\nFor the practice data, run 1 clearly has “many samples with few reads, in a block”. With your own data, this is where you would start to check your lab records.\n\n\n\n\n\n\nFixFiles are missing, or the number of R1 and R2 files differs (Step 2)\n\n\n\n\n\n\nCompare the file names with your sample sheet. Are the missing samples ones that you sent?\nDownload or copy the data again. Downloads can break off without a clear error.\nSome sequencing centers send checksums with the data, often in a file ending in .md5. A checksum is a short code that is calculated from a file. If the code of your copy matches the code from the center, your copy is complete. Ask Nina if you are unsure how to compare them.\n\nWho to contact: the sequencing center.\n\n\n\n\n\n\n\n\n\nFixR1 and R2 of a sample have different read numbers (4a)\n\n\n\n\n\n\nTest the files and download them again, as explained in the box in 4a.\n\nWho to contact: the sequencing center, if the new files are still broken.\n\n\n\n\n\n\n\n\n\nFixMany samples have few reads, or they form a block (4d and 4e)\n\n\n\n\n\nGo through your lab records, step by step. For each step, compare the flagged samples with the other samples:\n\nDNA extraction: the DNA concentrations. Were they already low for the flagged samples?\nPCR: the gel images. Did the flagged samples show a band?\nLibrary preparation and pooling: the library concentrations, and the volume of each sample that went into the pool.\nIndexes: the index (barcode) of each sample, in the sample sheet you sent to the sequencing center. The center uses these indexes to sort the reads into samples. This is called demultiplexing. A wrong or swapped index can make a sample look empty.\nPlate layout: do the flagged samples share a plate, a row or a column? That points to a step that was done per plate, row or column, for example with a multichannel pipette or an index plate.\nThe delivery report: how many reads are “undetermined”? These are reads that the center could not assign to any sample. Many undetermined reads can point to a problem with the indexes.\n\nWho to contact: the person who did the step that looks off. That can be you, a technician or a student. For questions about indexes and undetermined reads, contact the sequencing center.\n\n\n\n\n\n\n\n\n\nFixBlanks have many reads, or a positive control has very few (4f)\n\n\n\n\n\n\nThe gel images and concentrations of the controls.\nThe position of the controls on the plate. Was a blank next to a sample with a lot of DNA?\n\nWho to contact: the person who did the lab work.\n\n\n\n\n\n\n\n\n\nFixSome samples have clearly worse quality than the rest (Step 5)\n\n\n\n\n\n\nThe delivery report. Does the sequencing center mention a problem with the run?\n\nWho to contact: the sequencing center.\n\n\n\n\nWhat to bring\nWhoever you contact, these help them to understand the problem:\n\nread_counts.tsv (copy it to your computer with scp, as in Step 5)\nmultiqc_report.html, if you made one\nYour sample list, with the plate layout if you have it\nThe delivery email from the sequencing center, with any reports that came with it\nYour notes: what you ran and what you saw\n\n\n\nIf you are still stuck\nMaybe the checks above do not explain the problem. Maybe you do not know who did a step, or something else surprised you. Then talk to your PI. You can also contact Nina. This is especially useful if the samples cannot be sequenced again, and you want to discuss whether the data can still be used.",
+    "crumbs": [
+      "A first look at your data"
+    ]
+  },
+  {
+    "objectID": "source/first_look.html#now-your-own-data",
+    "href": "source/first_look.html#now-your-own-data",
+    "title": "A first look at your data",
+    "section": "Now your own data",
+    "text": "Now your own data\nYou now run the same steps on your own data. Most commands stay the same. This section explains what changes.\n\nMake a project folder\nGive every sequencing run its own folder. Here we call it seq_qc. If you check several runs, use names like seq_qc_run2026_10.\n# On Crunchomics: go to your personal folder\ncd ~/personal\n\n# Make the project folder with a data and a results folder inside\nmkdir -p seq_qc/data seq_qc/results\n\n# Move into the project folder\ncd seq_qc\n\n# Check: you should be in /home/uvanetid/personal/seq_qc, and see data and results\npwd\nls\nFrom now on, run every command from inside the seq_qc folder. If you log out and in again, first go back with cd ~/personal/seq_qc.\n\n\nGet your data onto Crunchomics\nChoose the option that fits how you got your data.\n\nDownload from a linkCopy from your own computer\n\n\nMany sequencing centers send a download link. You can download directly onto Crunchomics, which is faster than downloading to your laptop first:\n# On Crunchomics, inside seq_qc: download into the data folder\n# Replace the link with the one from your sequencing center. Keep the quotes.\n# Note in your notes where the link came from and when you got it\nwget -P data \"https://link-from-your-sequencing-center\"\nIf the download is one big file ending in .tar.gz, unpack it with tar, as in Step 2:\n# On Crunchomics, inside seq_qc: unpack the file into the data folder\n# Replace your_file.tar.gz with the name of your file. -C data: unpack into the data folder\ntar -xzf data/your_file.tar.gz -C data\n\n# Check: what is in data now? The files may sit in one or more folders\nls data\nFor a .zip file, or if you are unsure, ask Nina.\n\n\nIf the data is already on your computer, copy it with scp, as in Step 2. Run this in a terminal on your own computer, from the folder that contains your fastq.gz files:\n# On my computer: copy all fastq.gz files into the data folder on Crunchomics\n# Replace both instances of uvanetid with your UvAnetID\nscp *.fastq.gz uvanetid@omics-h0.science.uva.nl:/home/uvanetid/personal/seq_qc/data/\n\n\n\n\n\nCheck your files\nRun the commands from Check: are all files there? in Step 2. Your fastq.gz files should sit directly in the data folder. If they are in subfolders, move them with the commands from Move the files out of the sample folders in Step 2. If your files sit two folders deep, add one more */, for example data/*/*/*.fastq.gz. Use ls first to see how deep they are.\nCompare the numbers with your sample list:\n\nR1 count = number of samples you sent\nR1 count = R2 count\n\nIf a sample is missing, or there are files you did not expect, note it down. Step 6 says what to check and who to contact.\n\n\nRepeat Steps 3 to 6\nRun Steps 3 to 6 again, inside seq_qc, with these changes:\n\nEverywhere: you work in seq_qc instead of seq_qc_practice. In the scp commands of Step 5, replace seq_qc_practice with seq_qc.\nStep 4a and 4b: use your own seqkit table from Step 3. In the three commands that use seqkit_stats_practice.tsv, replace it with results/seqkit/seqkit_stats.tsv. For example:\n# Your own data: the table from Step 3\ncut -f1,4 results/seqkit/seqkit_stats.tsv | grep \"_R1\" | sort -t$'\\t' -k2,2n &gt; results/read_counts.tsv\nStep 4c: your file names probably do not start with the run. Use the box below to find out if your data comes from one run or more.\nStep 4d: if all your data comes from one run, use counts=results/read_counts.tsv.\nStep 4e: if your sample list says where each sample was on the plate, look the flagged samples up. Are they all in the same columns or rows?\nStep 4f: adjust the names in the grep command to how you named your controls.\nStep 5c: use the commands in the second box below to pick which reports to look at.\n\n\n\n\n\n\n\nTipTip: Step 4c with your own data: one run or more?\n\n\n\n\n\nThe first line of every fastq file tells you which run it comes from (see the deeper dive for what the parts mean):\n# For each R1 file: the file name and the instrument, run number and flow cell\nfor f in data/*_R1*.fastq.gz; do\n    run=$(zcat \"$f\" | head -1 | cut -d':' -f1-3)\n    echo -e \"$(basename \"$f\")\\t${run}\"\ndone &gt; results/run_per_file.tsv\n\n# How many files per run? One line means one run, and you can skip the rest of this box\ncut -f2 results/run_per_file.tsv | sort | uniq -c\nIf you see more than one run, make a read-count file per run. Replace FLOWCELL with a flow cell ID from the output above (the last part, for example 000000000-LT57L):\n# The R1 files of one run\ngrep \"FLOWCELL\" results/run_per_file.tsv | cut -f1 &gt; results/files_run1.txt\n\n# Keep only these files in the read-count table\ngrep -F -f results/files_run1.txt results/read_counts.tsv &gt; results/read_counts_run1.tsv\nwc -l results/read_counts_run1.tsv\nThen do 4d to 4f with results/read_counts_run1.tsv, and repeat for the other run.\n\n\n\n\n\n\n\n\n\nTipTip: Step 5c with your own data: which reports to pick\n\n\n\n\n\n# On Crunchomics, inside seq_qc\n# The 3 samples with the fewest reads\nhead -3 results/read_counts.tsv\n\n# Samples around the median: the middle lines of the sorted list (as in Step 4d)\nn_samples=$(wc -l &lt; results/read_counts.tsv)\nmiddle=$(( (n_samples + 1) / 2 ))\nsed -n \"${middle}p\" results/read_counts.tsv\nsed -n \"$(( middle + 1 ))p\" results/read_counts.tsv\nFor example, the report of Sample1_R1.fastq.gz is Sample1_R1_fastqc.html.\n\n\n\nThen decide, as in Step 6.",
+    "crumbs": [
+      "A first look at your data"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html",
+    "href": "source/cli_minimum.html",
+    "title": "The commands you need",
+    "section": "",
+    "text": "This page covers the few commands you need for this tutorial. Each command links to the matching section of the CLI workshop, where you find more explanation and exercises.\nOn this page, you work on your own computer. You download a small set of practice data and try every command on it. On the next page, A first look at your data, you copy the same practice data to Crunchomics and do the full check. After that, you repeat the check with your own data.\nIf you have never opened a terminal, first follow Before you start of the CLI workshop. On Windows, use a local terminal in MobaXterm. On a Mac, use the Terminal app, which you find in Applications, in the Utilities folder. The Mac terminal uses a slightly different shell (zsh), the program that reads your commands. So a few error messages may look a bit different from the ones on this page.\nIf something goes wrong, see Getting unstuck at the bottom of this page.",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#the-practice-data",
+    "href": "source/cli_minimum.html#the-practice-data",
+    "title": "The commands you need",
+    "section": "The practice data",
+    "text": "The practice data\nThe practice data comes from an ITS (a DNA region used to identify fungi) amplicon sequencing project from different soil samples. It comes from two real sequencing runs, Run1 and Run2, and it has a real problem that you find on the next page. The sample IDs are randomized, and every file was reduced to 2% of its reads to keep it small.\nYou get 32 samples. The data is paired-end: the sequencer reads each DNA fragment from both ends. So every sample has two files:\n\n..._R1.fastq.gz: the reads from one end of the fragments (the forward reads).\n..._R2.fastq.gz: the reads from the other end (the reverse reads).\n\nIn total, that makes 64 files. A .fastq file is a text file that holds every read, with a quality score for each base. The .gz at the end means that the file is compressed to save space.\nThe practice data also contains seqkit_stats_practice.tsv. This is a table with the number of reads per file, for all samples of the original two runs. You look at it further down this page.",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#the-terminal-and-the-prompt",
+    "href": "source/cli_minimum.html#the-terminal-and-the-prompt",
+    "title": "The commands you need",
+    "section": "The terminal and the prompt",
+    "text": "The terminal and the prompt\nIn the terminal, you type a command and press Enter. The computer runs it and prints the result as text. When the computer is ready for the next command, it shows the prompt, a line that usually ends with $.\nA few things that make life easier:\n\nCopy and paste. In many terminals, Ctrl+C does not copy, because Ctrl+C stops a command (see below). Use the right mouse button instead, or Ctrl+Shift+C and Ctrl+Shift+V. This differs between terminals, so try it once.\nTab completion. Type the first letters of a file or folder name and press Tab. The terminal completes the name for you. This saves typing and avoids typos.\nArrow up. Press the up arrow to get your previous commands back.\nComments. Everything after a # is a comment. The computer ignores it. In this tutorial, every command comes with a comment that says what it does. You can paste the comments along with the commands.",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#pwd-where-am-i",
+    "href": "source/cli_minimum.html#pwd-where-am-i",
+    "title": "The commands you need",
+    "section": "pwd: where am I?",
+    "text": "pwd: where am I?\n# On my computer: print the folder you are in right now\npwd\nWhen you open a new terminal, you start in your home folder. The path that pwd prints differs between computers. A path is the address of a folder, with folder names separated by /. The CLI workshop explains where your home folder is.",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#ls-what-is-in-this-folder",
+    "href": "source/cli_minimum.html#ls-what-is-in-this-folder",
+    "title": "The commands you need",
+    "section": "ls: what is in this folder?",
+    "text": "ls: what is in this folder?\n# On my computer: list the files and folders in the current folder\nls\n\n# The same, with more details: size, date, owner\n# Options used with ls: \n# -l long list with details, -h sizes in K/M/G\nls -lh\nMore: ls in the workshop",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#mkdir-make-a-folder",
+    "href": "source/cli_minimum.html#mkdir-make-a-folder",
+    "title": "The commands you need",
+    "section": "mkdir: make a folder",
+    "text": "mkdir: make a folder\n\n\n\n\n\n\nImportantMobaXterm users: did you choose a permanent folder?\n\n\n\n\n\nMobaXterm can use a temporary home folder. Then it deletes your files when you close it. Before you continue, check this with the steps in Windows + MobaXterm: choose a permanent folder on the “Before you start” page of the CLI workshop.\n\n\n\n# On my computer, in your home folder: make a folder for the practice data\nmkdir seq_qc_practice\n\n# Check: you should see seq_qc_practice in the list\nls -l\nMore: mkdir in the workshop",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#cd-move-into-a-folder",
+    "href": "source/cli_minimum.html#cd-move-into-a-folder",
+    "title": "The commands you need",
+    "section": "cd: move into a folder",
+    "text": "cd: move into a folder\n# On my computer: move into the seq_qc_practice folder\ncd seq_qc_practice\n\n# Check: the path should now end in seq_qc_practice\npwd\nA few more ways to use cd. Try them, and then go back into seq_qc_practice:\n# Move one folder up\ncd ..\n\n# Check where you are now \npwd\n\n# Move back to your home folder, from anywhere\ncd\n\n# Check where you are now \npwd\n\n# Go back into the practice folder: ~ is short for your home folder\ncd ~/seq_qc_practice\npwd\nAfter every cd, check where you are with pwd. Most errors in this tutorial come from running a command in the wrong folder.\nMore: cd in the workshop",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#get-the-practice-data-curl-and-tar",
+    "href": "source/cli_minimum.html#get-the-practice-data-curl-and-tar",
+    "title": "The commands you need",
+    "section": "Get the practice data: curl and tar",
+    "text": "Get the practice data: curl and tar\nThe practice data comes in one file, practice_data.tar.gz. A .tar.gz file packs many files into one and compresses them, similar to a .zip file.\n\n\n\n\n\n\nWarningDraft note (remove before publishing)\n\n\n\n\nThe practice data is not online yet. Replace REPO-NAME with the name of the repository.\ncurl -L -O and tar -xzf are not tested yet in MobaXterm and on a Mac.\n\n\n\n# On my computer, inside seq_qc_practice: download the practice data\n# -L: if the link sends you on to another address, follow it\n# -O: save the file under its own name, practice_data.tar.gz\ncurl -L -O \"https://raw.githubusercontent.com/ndombrowski/REPO-NAME/main/data/practice_data.tar.gz\"\n\n# Check: you should see practice_data.tar.gz, with a size of about 11M (11 megabytes)\nls -lh\n\n# Unpack it: -x extract, -z it is compressed (.gz), -f the file name follows\ntar -xzf practice_data.tar.gz\n\n# Check what changed\n# you should see data, practice_data.tar.gz and seqkit_stats_practice.tsv\nls\n\n# Check the inside of the newly generated data folder \n# you should see one folder per sample, with names like Run1_S137 (you learn how to count the number of files later)\nls data \n\n# Look inside one sample folder: you should see the R1 and R2 file of that sample\nls data/Run1_S137\nThe data folder contains several folders, one per sample. Each sample folder holds the sequencing files of that sample. Many sequencing centers deliver data like this. One good first sanity check is to count the number of folders or files you have per sample. Let’s learn how to do this next.\nKeep practice_data.tar.gz. You copy it to Crunchomics on the next page.",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#wildcards",
+    "href": "source/cli_minimum.html#wildcards",
+    "title": "The commands you need",
+    "section": "Wildcards: *",
+    "text": "Wildcards: *\nA * in a file name means “any text”. This lets you select many files at once.\n# Look for R1 files directly in data: data/*_R1.fastq.gz matches every file in data that ends in _R1.fastq.gz\n# You get \"No such file or directory\": the files are one level deeper, in the sample folders\nls data/*_R1.fastq.gz\n\n# Look one level deeper: the first * stands for any folder name in data\nls data/*/*_R1.fastq.gz\nThe last command lists 32 files, from data/Run1_S137/Run1_S137_R1.fastq.gz to data/Run2_ITS100/Run2_ITS100_R1.fastq.gz.\nMore: wildcards in the workshop",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#counting-wc--l-and-the-pipe",
+    "href": "source/cli_minimum.html#counting-wc--l-and-the-pipe",
+    "title": "The commands you need",
+    "section": "Counting: wc -l and the pipe |",
+    "text": "Counting: wc -l and the pipe |\nwc -l counts lines. The pipe | sends the output of one command into the next command. Together, they let you count things, for example the number of files:\n# On your computer, inside seq_qc_practice\n# Count the fastq.gz files in the sample folders: \n# when ls sends its output into a pipe, it prints one name per line, and wc -l counts the lines\n# Expected: 64\nls data/*/*.fastq.gz | wc -l\n\n# Count only the R1 files. Expected: 32\nls data/*/*_R1.fastq.gz | wc -l\nYou will use this a lot. After each step, you count what you have and compare it with what you expect. For now the command tells us that you work with a total of 64 files from 32 samples. That is what we would have expected and we can therefore proceed.\nIf you ever see fewer samples than what you expect then this often means an incomplete download. To check this, download the file again and repeat the steps from above to see whether this recovers your files.\nMore: wc and pipes in the workshop",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#looking-at-files-head-and-less",
+    "href": "source/cli_minimum.html#looking-at-files-head-and-less",
+    "title": "The commands you need",
+    "section": "Looking at files: head and less",
+    "text": "Looking at files: head and less\nseqkit_stats_practice.tsv is a table with the number of reads in every file of the original sequencing runs. A .tsv file is a table where tabs separate the columns. You make a table like this yourself on the next page.\n# On my computer, inside seq_qc_practice\n# Show the first 10 lines of the table\nhead seqkit_stats_practice.tsv\n\n# Count the lines. Expected: 729 (one header line and 728 files)\nwc -l seqkit_stats_practice.tsv\n\n# Scroll through the whole table. Use the arrow keys, and press q to quit\n# -S keeps long lines on one line, so tables stay readable\nless -S seqkit_stats_practice.tsv\nIn this file you work with 728 files, not 64. That is because the table covers all 364 samples of the original runs, and the practice data is 32 of them.\nThe first line of seqkit_stats_practice.tsv is the header, with the column names. The fourth column, num_seqs, is the number of reads in each file.\nMore: head and less in the workshop",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#tidy-up-mv-and-rmdir",
+    "href": "source/cli_minimum.html#tidy-up-mv-and-rmdir",
+    "title": "The commands you need",
+    "section": "Tidy up: mv and rmdir",
+    "text": "Tidy up: mv and rmdir\nmv moves files. Here, you move all fastq.gz files out of the sample folders, directly into data. The mv command is handy whenever you want to re-organize data for a cleaner folder structure.\n\n\n\n\n\n\nWarningDraft note (remove before publishing)\n\n\n\nmv -n and rmdir data/*/ were tested in Git Bash on Windows (2026-10-20) and on WSL, not yet in MobaXterm, on a Mac or on Crunchomics. In the Windows test, rmdir failed once with Device or resource busy on one folder. This is probably a Windows file lock, not a problem with the command (not verified).\n\n\n\n\n\n\n\n\nImportantImportant: mv also renames\n\n\n\n\n\nIf the last name in an mv command is not an existing folder, mv renames your file to that name. For example, with a typo, mv sample_R1.fastq.gz dta renames the file to dta. To prevent this, end a folder name with /, as in data/. Then mv stops with an error if the folder does not exist.\n\n\n\n# On your computer, inside seq_qc_practice\n# Move all fastq.gz files from the sample folders up into the data folder\n# -n: never overwrite a file that already exists in data\nmv -n data/*/*.fastq.gz data/\n\n# Check: count the fastq.gz files directly in data. Expected: 64\nls data/*.fastq.gz | wc -l\n\n# Check: count the fastq.gz files left in the sample folders. Expected: 0\n# You also see \"ls: cannot access ... No such file or directory\". That is fine: there are no files left to list\nls data/*/*.fastq.gz | wc -l\nMore: mv in the workshop\nThe sample folders are now empty. rmdir removes empty folders. It never removes a folder that still contains files, so it is a safe way to clean up:\n# On my computer, inside seq_qc_practice\n# Remove the empty sample folders: data/*/ matches every folder in data\nrmdir data/*/\n\n# Check: look at the first names, and count everything in data\n# Expected: only fastq.gz files, 64 in total\nls data | head\nls data | wc -l\nIf a sample folder still contains a file, rmdir says Directory not empty and keeps that folder. Look inside with ls to see what is left.",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#getting-unstuck",
+    "href": "source/cli_minimum.html#getting-unstuck",
+    "title": "The commands you need",
+    "section": "Getting unstuck",
+    "text": "Getting unstuck\n\nA command does not finish, or the prompt does not come back: press Ctrl+C to stop it.\nThe prompt changes to &gt; (or dquote&gt; on a Mac) and nothing happens: the terminal waits for the rest of a command. This often happens when a quote \" is missing, for example when you copied only part of a line. Press Ctrl+C, then copy and paste the whole command again.\ncommand not found: the computer does not know this command. Check the spelling. On your own computer, it can also mean that the tool is not installed.\nNothing is printed: for many commands, such as mkdir, cd and mv, no output means that the command worked. Use ls or pwd to check the result.\nAn error message: read it. It usually says what went wrong, for example No such file or directory means the file name is wrong, or you are in the wrong folder (check with pwd and ls).\n\nMore: error messages and Ctrl+C in the workshop",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "source/cli_minimum.html#next",
+    "href": "source/cli_minimum.html#next",
+    "title": "The commands you need",
+    "section": "Next",
+    "text": "Next\nGo to A first look at your data. Keep your terminal open, or remember that your practice data is in ~/seq_qc_practice.",
+    "crumbs": [
+      "The commands you need"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "You just received sequencing data. This short tutorial helps you take a first look at it, shortly after receiving it, and decide one thing: does anything look off?\nTo follow this tutorial you do not need to know the command line. You copy and paste a small number of commands, and you look at a few numbers and one report. You first work through all steps with practice data from a real sequencing run with a real problem, and then repeat them with your own data.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#why-look-at-your-data-right-away",
+    "href": "index.html#why-look-at-your-data-right-away",
+    "title": "Welcome",
+    "section": "Why look at your data right away?",
+    "text": "Why look at your data right away?\nAssume you send some data of for sequencing. It often takes some weeks to get the sequencing data back and you have other projects to follow up. Often this means that the data won’t get inspected months after receiving it. However, after you finally find time to start your analysis workflow you realize something is wrong, 40% of samples have very few reads and you have to figure out what is going on.\nIf you wait for a long time inspecting the quality of your sequencing data it can become much harder to figure out what went wrong, or how to fix it. Maybe the PCR products are no longer available, maybe you realize your lab notes are incomplete or the person at the sequencing center who handle the data is gone.\nIf you look at the read numbers in the first week, the problem would have been visible in five minutes, while it still might be easier to fix a potential issue.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-will-do",
+    "href": "index.html#what-you-will-do",
+    "title": "Welcome",
+    "section": "What you will do",
+    "text": "What you will do\n\nCopy data to Crunchomics, the UvA computer cluster\nCount the reads in every sample, and check for samples with far fewer reads than the rest\nMake a quality report for all samples with FastQC and MultiQC\nDecide: everything looks fine, or something needs a closer look. For the second case, the tutorial gives a checklist and says who to contact\n\nYou do these steps twice. First with practice data from a real sequencing run with a real problem. For every step, the tutorial tells you what you should see. Then you repeat the same steps with your own data.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#before-you-start",
+    "href": "index.html#before-you-start",
+    "title": "Welcome",
+    "section": "Before you start",
+    "text": "Before you start\nYou need:\n\nA Crunchomics account, a working terminal, and access to the UvA network (eduroam or VPN). The Before you start page of the CLI workshop explains how to get these. Getting an account takes 1 to 3 days, so request it early.\nYour data, or the download link from the sequencing center. You can do the practice round before your data arrives.\nYour sample list (or sample sheet): which samples you sent, and ideally where each sample was on the plate\nThe delivery email from the sequencing center, with any reports that came with it\n\nStart with The commands you need. There you download the practice data and try the few commands you need. It takes about 15 minutes. If you already know the command line well, you can skip to A first look at your data.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#contact",
+    "href": "index.html#contact",
+    "title": "Welcome",
+    "section": "Contact",
+    "text": "Contact\nEmail Nina Dombrowski (n.dombrowski@uva.nl) if:\n\nYou get stuck setting up the terminal, your Crunchomics account or the connection\nA command gives an error. Please tell me which step went wrong and copy the exact error message, or add a screenshot.\nYou want to learn more about the command line or coding\n\nPart of my job is to support IBED researchers with bioinformatics.\nIf something in your data looks off, Step 6 has a checklist and says who to contact. Usually that is the person who did the lab step, or the sequencing center. If you are still stuck after that, talk to your PI, or contact me. Contact me also if samples cannot be sequenced again and you want to discuss whether the data can still be used.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "source/deeper_dive.html",
+    "href": "source/deeper_dive.html",
+    "title": "Deeper dive (optional)",
+    "section": "",
+    "text": "WarningDraft note (remove before publishing)\n\n\n\nThis page is an outline. Only the first section is written out.\nThis page is for those who want to understand their data better, or who found a flag on the previous page and want to know more. It uses the practice data, which comes from a run where about 40% of the samples failed.",
+    "crumbs": [
+      "Deeper dive (optional)"
+    ]
+  },
+  {
+    "objectID": "source/deeper_dive.html#what-the-read-header-tells-you",
+    "href": "source/deeper_dive.html#what-the-read-header-tells-you",
+    "title": "Deeper dive (optional)",
+    "section": "What the read header tells you",
+    "text": "What the read header tells you\nEvery read in a fastq file starts with a header line that begins with @. For Illumina data, the header holds information about where and how the read was sequenced.\n# The first header line of one practice file\nzcat data/Run1_S137_R1.fastq.gz | head -1\nIt looks something like this:\n@M08325:104:000000000-LT57L:1:1101:15589:1335 1:N:0:GTGTATGCGT\nThe parts before the space are separated by ::\n\n\n\n\n\n\n\n\nPart\nExample\nMeaning\n\n\n\n\nInstrument\nM08325\nThe sequencer. An ID starting with M is a MiSeq\n\n\nRun number\n104\nThe how-manyth run on this instrument\n\n\nFlow cell\n000000000-LT57L\nThe flow cell (the glass slide the DNA was sequenced on)\n\n\nLane\n1\nThe lane on the flow cell\n\n\nTile, x, y\n1101:15589:1335\nWhere on the flow cell this read was\n\n\n\nThe parts after the space:\n\n\n\nPart\nExample\nMeaning\n\n\n\n\nRead\n1\n1 for the R1 file, 2 for the R2 file\n\n\nFiltered\nN\nN: the read passed the quality filter\n\n\nControl\n0\n0 for normal reads\n\n\nIndex\nGTGTATGCGT\nThe barcode as it was read by the sequencer\n\n\n\nExercise: Look at the first header of a Run1_ and a Run2_ file. Were they sequenced on the same instrument? In the same run?\nExercise: The index at the end is the barcode that was used to sort the read into its sample. Count the indices in the first 1000 reads of a good sample and of a failed sample:\n# Count the barcodes in the first 1000 reads (4000 lines) of one file, most common first\n# Replace the file name to compare different samples\nzcat data/Run1_S137_R1.fastq.gz | head -4000 | awk 'NR % 4 == 1' | cut -d':' -f10 | sort | uniq -c | sort -rn | head\nWhat do you notice? (Answer to be written: in good samples, one barcode dominates; in failed samples, the reads are spread over barcodes that differ in one letter.)",
+    "crumbs": [
+      "Deeper dive (optional)"
+    ]
+  },
+  {
+    "objectID": "source/deeper_dive.html#planned-sections",
+    "href": "source/deeper_dive.html#planned-sections",
+    "title": "Deeper dive (optional)",
+    "section": "Planned sections",
+    "text": "Planned sections\n\nWhy failed samples look low quality: their few reads mostly come from other samples, through barcodes that were misread by one letter. Such reads tend to have lower quality overall.\nFrom sample numbers to plate positions: how sample numbers map onto a 96-well plate, and how to see that the failed samples sit in the same columns on every plate.\nComparing two runs: run IDs per file, and why read numbers should be compared within a run.\nWhat to ask the sequencing center: the Undetermined reads, cluster numbers, and the demultiplexing report.",
+    "crumbs": [
+      "Deeper dive (optional)"
+    ]
+  }
+]

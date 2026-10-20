@@ -1,0 +1,47 @@
+---
+title: "Welcome"
+---
+
+You just received sequencing data. This short tutorial helps you take a first look at it, shortly after receiving it, and decide one thing: does anything look off? 
+
+To follow this tutorial you do not need to know the command line. You copy and paste a small number of commands, and you look at a few numbers and one report. You first work through all steps with practice data from a real sequencing run with a real problem, and then repeat them with your own data.
+
+## Why look at your data right away?
+
+Assume you send some data of for sequencing. It often takes some weeks to get the sequencing data back and you have other projects to follow up. Often this means that the data won't get inspected months after receiving it. However, after you finally find time to start your analysis workflow you realize something is wrong, 40% of samples have very few reads and you have to figure out what is going on.
+
+If you wait for a long time inspecting the quality of your sequencing data it can become much harder to figure out what went wrong, or how to fix it. Maybe the PCR products are no longer available, maybe you realize your lab notes are incomplete or the person at the sequencing center who handle the data is gone.
+
+If you look at the read numbers in the first week, the problem would have been visible in five minutes, while it still might be easier to fix a potential issue.
+
+## What you will do
+
+1. Copy data to Crunchomics, the UvA computer cluster
+2. Count the reads in every sample, and check for samples with far fewer reads than the rest
+3. Make a quality report for all samples with FastQC and MultiQC
+4. Decide: everything looks fine, or something needs a closer look. For the second case, the tutorial gives a checklist and says who to contact
+
+You do these steps twice. First with practice data from a real sequencing run with a real problem. For every step, the tutorial tells you what you should see. Then you repeat the same steps with your own data.
+
+## Before you start
+
+You need:
+
+- **A Crunchomics account, a working terminal, and access to the UvA network** (eduroam or VPN). The [Before you start](https://ndombrowski.github.io/cli_workshop/source/installation.html) page of the CLI workshop explains how to get these. Getting an account takes 1 to 3 days, so request it early.
+- **Your data**, or the download link from the sequencing center. You can do the practice round before your data arrives.
+- **Your sample list** (or sample sheet): which samples you sent, and ideally where each sample was on the plate
+- **The delivery email** from the sequencing center, with any reports that came with it
+
+Start with [The commands you need](source/cli_minimum.qmd). There you download the practice data and try the few commands you need. It takes about 15 minutes. If you already know the command line well, you can skip to [A first look at your data](source/first_look.qmd).
+
+## Contact
+
+Email Nina Dombrowski (n.dombrowski@uva.nl) if:
+
+- You get stuck setting up the terminal, your Crunchomics account or the connection
+- A command gives an error. Please tell me which step went wrong and copy the exact error message, or add a screenshot.
+- You want to learn more about the command line or coding
+
+Part of my job is to support IBED researchers with bioinformatics.
+
+If something in your data looks off, [Step 6](source/first_look.qmd#step-6-decide) has a checklist and says who to contact. Usually that is the person who did the lab step, or the sequencing center. If you are still stuck after that, talk to your PI, or contact me. Contact me also if samples cannot be sequenced again and you want to discuss whether the data can still be used.

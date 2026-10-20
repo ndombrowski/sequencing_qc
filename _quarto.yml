@@ -1,0 +1,26 @@
+project:
+  type: website
+  # Write the rendered website to docs/, so GitHub Pages can serve it from there
+  output-dir: docs
+  # Only render the .qmd pages, so readme.md, CLAUDE.md and PLAN.md do not become pages
+  render:
+    - "*.qmd"
+
+website:
+  title: "First look at your sequencing data"
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - index.qmd
+      - source/cli_minimum.qmd
+      - source/first_look.qmd
+      - source/deeper_dive.qmd
+
+format:
+  html:
+    theme:
+      light: [lumen, styles.scss]
+      dark: [cyborg, styles.scss]
+    toc: true
+    code-copy: true

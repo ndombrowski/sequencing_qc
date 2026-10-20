@@ -1,0 +1,64 @@
+---
+title: "Deeper dive (optional)"
+---
+
+::: {.callout-warning}
+## Draft note (remove before publishing)
+
+This page is an outline. Only the first section is written out.
+:::
+
+This page is for those who want to understand their data better, or who found a flag on the previous page and want to know more. It uses the practice data, which comes from a run where about 40% of the samples failed.
+
+## What the read header tells you
+
+Every read in a fastq file starts with a header line that begins with `@`. For Illumina data, the header holds information about where and how the read was sequenced.
+
+```bash
+# The first header line of one practice file
+zcat data/Run1_S137_R1.fastq.gz | head -1
+```
+
+It looks something like this:
+
+```
+@M08325:104:000000000-LT57L:1:1101:15589:1335 1:N:0:GTGTATGCGT
+```
+
+The parts before the space are separated by `:`:
+
+| Part | Example | Meaning |
+|------|---------|---------|
+| Instrument | `M08325` | The sequencer. An ID starting with `M` is a MiSeq |
+| Run number | `104` | The how-manyth run on this instrument |
+| Flow cell | `000000000-LT57L` | The flow cell (the glass slide the DNA was sequenced on) |
+| Lane | `1` | The lane on the flow cell |
+| Tile, x, y | `1101:15589:1335` | Where on the flow cell this read was |
+
+The parts after the space:
+
+| Part | Example | Meaning |
+|------|---------|---------|
+| Read | `1` | 1 for the R1 file, 2 for the R2 file |
+| Filtered | `N` | `N`: the read passed the quality filter |
+| Control | `0` | 0 for normal reads |
+| Index | `GTGTATGCGT` | The barcode as it was read by the sequencer |
+
+**Exercise:** Look at the first header of a `Run1_` and a `Run2_` file. Were they sequenced on the same instrument? In the same run?
+
+**Exercise:** The index at the end is the barcode that was used to sort the read into its sample. Count the indices in the first 1000 reads of a good sample and of a failed sample:
+
+```bash
+# Count the barcodes in the first 1000 reads (4000 lines) of one file, most common first
+# Replace the file name to compare different samples
+zcat data/Run1_S137_R1.fastq.gz | head -4000 | awk 'NR % 4 == 1' | cut -d':' -f10 | sort | uniq -c | sort -rn | head
+```
+
+What do you notice? (Answer to be written: in good samples, one barcode dominates; in failed samples, the reads are spread over barcodes that differ in one letter.)
+
+## Planned sections
+
+- **Why failed samples look low quality**: their few reads mostly come from other samples, through barcodes that were misread by one letter. Such reads tend to have lower quality overall.
+- **From sample numbers to plate positions**: how sample numbers map onto a 96-well plate, and how to see that the failed samples sit in the same columns on every plate.
+- **Comparing two runs**: run IDs per file, and why read numbers should be compared within a run.
+- **What to ask the sequencing center**: the Undetermined reads, cluster numbers, and the demultiplexing report.
