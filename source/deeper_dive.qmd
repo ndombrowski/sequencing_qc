@@ -6,10 +6,41 @@ engine: knitr
 ::: {.callout-warning}
 ## Draft note (remove before publishing)
 
-This page is an outline. Only the first section is written out.
+This page is an outline. Only the first two sections are written out.
+
+- `zcat` was tested in Git Bash and MobaXterm (2026-10-22). On a Mac, `gzcat` instead of `zcat` is not tested yet.
 :::
 
 This page is for those who want to understand their data better, or who found a flag on the previous page and want to know more. It uses the practice data, which comes from a run where about 40% of the samples failed.
+
+## What a fastq file looks like
+
+A fastq.gz file is compressed, so `head` on it shows unreadable characters. `zcat` unpacks the file and prints the text to the screen, without changing the file itself. Send its output into `head` to see only the start.
+
+On a Mac, use `gzcat` instead of `zcat`, here and in the rest of this page.
+
+```{bash}
+# Show the first 4 lines of one fastq file: this is the first read
+zcat data/Run1_S137_R1.fastq.gz | head -4
+```
+
+Every read takes up 4 lines:
+
+1. The read name, or header. It starts with `@` and holds information about the sequencing machine and the run. The next section explains its parts.
+2. The sequence: the bases A, C, G and T.
+3. A `+`.
+4. The quality: one character per base. Each character stands for how sure the machine is about that base.
+
+Because every read has 4 lines, you can count the reads in a file. Count the lines and divide by 4:
+
+```{bash}
+# Count the lines in one fastq file. Expected: 9940, so 9940 / 4 = 2485 reads
+zcat data/Run1_S137_R1.fastq.gz | wc -l
+```
+
+On the main page, `seqkit` does this count for all files at once.
+
+More: [zcat](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#zcat-decompress-and-print-to-screen) and [fastq files](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#exploring-the-content-of-compressed-fastq-files) in the CLI workshop
 
 ## What the read header tells you
 

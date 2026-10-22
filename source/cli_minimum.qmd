@@ -3,7 +3,7 @@ title: "The commands you need"
 engine: knitr
 ---
 
-This page covers the few commands you need for this tutorial. Each command links to the matching section of the [CLI workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html), where you find more explanation and exercises.
+This page covers only the few commands you need for this tutorial. You do not need to understand every detail. Copy the commands, and check that your output matches what the page tells you to expect. If you want to learn the command line properly, for example to explore your own data in more depth, follow the [CLI workshop](https://ndombrowski.github.io/cli_workshop/). Each command on this page also links to the matching section of the workshop, where you find more explanation and exercises.
 
 On this page, you work on **your own computer**. You download a small set of practice data and try every command on it. On the next page, [A first look at your data](first_look.qmd), you copy the same practice data to Crunchomics and do the full check. After that, you repeat the check with your own data.
 
@@ -13,9 +13,9 @@ If something goes wrong, see [Getting unstuck](#getting-unstuck) at the bottom o
 
 ## The practice data
 
-The practice data comes from an ITS (a DNA region used to identify fungi) amplicon sequencing project from different soil samples. It comes from two real sequencing runs, Run1 and Run2, and it has a real problem that you find on the next page. The sample IDs are randomized, and every file was reduced to 2% of its reads to keep it small.
+The practice data comes from an ITS (a DNA region used to identify fungi) amplicon sequencing project from different soil samples. It comes from two real sequencing runs, Run1 and Run2, and it has a real problem that you explore on the next page. The sample IDs are randomized, and every file was reduced to 2% of its reads to keep it small.
 
-You get 32 samples. The data is **paired-end**: the sequencer reads each DNA fragment from both ends. So every sample has two files:
+You will work with 32 samples that were sequenced with Illumina, a widely used type of sequencing machine. The data is **paired-end**: the sequencer reads each DNA fragment from both ends. So every sample has two files:
 
 - `..._R1.fastq.gz`: the reads from one end of the fragments (the forward reads).
 - `..._R2.fastq.gz`: the reads from the other end (the reverse reads).
@@ -112,12 +112,6 @@ More: [cd in the workshop](https://ndombrowski.github.io/cli_workshop/source/bas
 
 The [practice data](#the-practice-data) comes in one file, `practice_data.tar.gz`. A `.tar.gz` file packs many files into one and compresses them, similar to a `.zip` file.
 
-::: {.callout-warning}
-## Draft note (remove before publishing)
-
-- `curl -L -O` and `tar -xzf` are not tested yet in MobaXterm and on a Mac.
-:::
-
 ```{bash}
 # On my computer, inside seq_qc_practice: download the practice data
 # -L: if the link sends you on to another address, follow it
@@ -206,6 +200,60 @@ In this file you work with 728 files, not 64. That is because the table covers a
 The first line of `seqkit_stats_practice.tsv` is the header, with the column names. The fourth column, `num_seqs`, is the number of reads in each file.
 
 More: [head](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#head-view-the-first-lines-of-a-file) and [less](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#less-view-the-full-file) in the workshop
+
+
+## Searching and selecting: `grep` and `cut`
+
+`grep` keeps only the lines that contain a word or a piece of text. `cut` keeps only some columns of a table. Try both on `seqkit_stats_practice.tsv`:
+
+```{bash}
+# On my computer, inside seq_qc_practice
+# Show only the lines for sample Run1_S137. Expected: 2 lines, one for R1 and one for R2
+grep "Run1_S137" seqkit_stats_practice.tsv
+
+# Count the lines of run 2. Expected: 248 (124 samples, with an R1 and an R2 file each)
+grep "Run2_" seqkit_stats_practice.tsv | wc -l
+
+# Keep only column 1 (the file name) and column 4 (the number of reads)
+# -f: the columns to keep, separated by a comma
+cut -f1,4 seqkit_stats_practice.tsv | head
+```
+
+These commands become very handy once we combine them with a pipe to answer a question about your data. For example: how many reads do the blanks have?
+
+```{bash}
+# The lines with Blank in the name, and only the file name and number of reads
+# Expected: 8 lines (4 blanks, R1 and R2), with between 41 and 4561 reads
+grep "Blank" seqkit_stats_practice.tsv | cut -f1,4
+```
+
+`grep` is case-sensitive: `grep "blank"` finds nothing here, because the file names use `Blank`. With `grep -i`, upper and lower case count as the same. You use this on the next page.
+
+More: [grep](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#grep-find-patterns-in-data) and [cut](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#cut-extract-parts-of-each-line) in the workshop
+
+## Saving output to a file: `>`
+
+So far, every command printed its result to the screen. With `>`, you save the result in a file instead. On the next page, you use this to save your read counts.
+
+::: {.callout-important title="Important: > overwrites without asking" collapse="false"}
+If the file after `>` already exists, `>` replaces its content without a warning. Check the file name before you press Enter.
+:::
+
+```{bash}
+# On my computer, inside seq_qc_practice
+# Save the file names and read numbers of the blanks in a new file, blanks.tsv
+# Nothing is printed to the screen: the output goes into the file
+grep "Blank" seqkit_stats_practice.tsv | cut -f1,4 > blanks.tsv
+
+# Check: blanks.tsv is there
+ls
+
+# Check: 8 lines, the same as on the screen before
+wc -l blanks.tsv
+head blanks.tsv
+```
+
+More: [redirection in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#io-redirection-to-new-files)
 
 ## Tidy up: `mv` and `rmdir`
 
