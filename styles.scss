@@ -26,6 +26,13 @@ $fix-header-dark: #5d3a12 !default;         /* dark orange header, dark theme */
 
 /*-- scss:rules --*/
 
+// Space and a thin line between the page title and the first paragraph
+#title-block-header {
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.4);
+}
+
 // Exercise and answer boxes, used as:
 // ::: {.callout-question .callout-warning collapse="false" title="Exercise"}
 // ::: {.callout-answer .callout-warning collapse="true" title="Click me to see an answer"}
@@ -127,8 +134,16 @@ div.callout-fix.callout {
   }
 }
 
+// Quarto draws its own caution icon as a background image with a 1rem size,
+// so remove that image and let the emoji set its own size
 div.callout-fix.callout .callout-icon::before {
-  content: "🔧";
+  content: "🧰";
+  background-image: none !important;
+  width: auto !important;
+  height: auto !important;
+  // the toolbox emoji sits a bit low next to the title, so move it up slightly
+  position: relative;
+  top: -0.1rem;
 }
 
 // Tab headers of a tabset, used as:

@@ -3,60 +3,81 @@ title: "The commands you need"
 engine: knitr
 ---
 
-This page covers only the few commands you need for this tutorial. You do not need to understand every detail. Copy the commands, and check that your output matches what the page tells you to expect. If you want to learn the command line properly, for example to explore your own data in more depth, follow the [CLI workshop](https://ndombrowski.github.io/cli_workshop/). Each command on this page also links to the matching section of the workshop, where you find more explanation and exercises.
+This page covers only the few commands you need for this tutorial. For most of them, you do not need to understand every detail. Copy the commands, and check that your output matches what the page tells you to expect. The exception is moving around: `pwd`, `ls`, `cd` and paths. Take the time to understand these. You use them all the time, and they help you find your way when a command fails. If you want to learn the command line properly, for example to explore your own data in more depth, follow the [CLI workshop](https://ndombrowski.github.io/cli_workshop/). Each command on this page also links to the matching section of the workshop, where you find more explanation and exercises.
 
 On this page, you work on **your own computer**. You download a small set of practice data and try every command on it. On the next page, [A first look at your data](first_look.qmd), you copy the same practice data to Crunchomics and do the full check. After that, you repeat the check with your own data.
 
-If you have never opened a terminal, first follow [Before you start](https://ndombrowski.github.io/cli_workshop/source/installation.html) of the CLI workshop. On Windows, use a local terminal in MobaXterm. On a Mac, use the Terminal app, which you find in Applications, in the Utilities folder. The Mac terminal uses a slightly different shell (zsh), the program that reads your commands. So a few error messages may look a bit different from the ones on this page.
-
-If something goes wrong, see [Getting unstuck](#getting-unstuck) at the bottom of this page.
-
-## The practice data
+## The practice data {#the-practice-data}
 
 The practice data comes from an ITS (a DNA region used to identify fungi) amplicon sequencing project from different soil samples. It comes from two real sequencing runs, Run1 and Run2, and it has a real problem that you explore on the next page. The sample IDs are randomized, and every file was reduced to 2% of its reads to keep it small.
 
 You will work with 32 samples that were sequenced with Illumina, a widely used type of sequencing machine. The data is **paired-end**: the sequencer reads each DNA fragment from both ends. So every sample has two files:
 
-- `..._R1.fastq.gz`: the reads from one end of the fragments (the forward reads).
-- `..._R2.fastq.gz`: the reads from the other end (the reverse reads).
+-   `..._R1.fastq.gz`: the reads from one end of the fragments (the forward reads).
+-   `..._R2.fastq.gz`: the reads from the other end (the reverse reads).
 
 In total, that makes 64 files. A `.fastq` file is a text file that holds every read, with a quality score for each base. The `.gz` at the end means that the file is compressed to save space.
 
 The practice data also contains `seqkit_stats_practice.tsv`. This is a table with the number of reads per file, for all samples of the original two runs. You look at it further down this page.
 
+## Setting up a terminal
+
+For this tutorial you need **set up a terminal**: a window in which you type commands (instructions to the computer) as text, instead of clicking on buttons and menus. If you have never opened a terminal, first follow [Before you start](https://ndombrowski.github.io/cli_workshop/source/installation.html) of the CLI workshop:
+
+-   On Windows, use a local terminal in MobaXterm.
+-   On a Mac, use the Terminal app, which you find in Applications, in the Utilities folder. The Mac terminal uses a slightly different shell (zsh), the program that reads your commands. So a few error messages may look a bit different from the ones on this page.
+
+If something goes wrong, see [Getting unstuck](#getting-unstuck) at the bottom of this page.
+
 ## The terminal and the prompt
 
-In the terminal, you type a command and press Enter. The computer runs it and prints the result as text. When the computer is ready for the next command, it shows the **prompt**, a line that usually ends with `$`.
+The terminal passes what you type to a **shell**, the program that reads your commands and tells the computer what to do. When the computer is ready for the next command, it shows the **prompt**, a line that usually ends with `$`.
 
 A few things that make life easier:
 
-- **Copy and paste.** In many terminals, Ctrl+C does not copy, because Ctrl+C stops a command (see below). Use the right mouse button instead, or Ctrl+Shift+C and Ctrl+Shift+V. This differs between terminals, so try it once.
-- **Tab completion.** Type the first letters of a file or folder name and press Tab. The terminal completes the name for you. This saves typing and avoids typos.
-- **Arrow up.** Press the up arrow to get your previous commands back.
-- **Comments.** Everything after a `#` is a comment. The computer ignores it. In this tutorial, every command comes with a comment that says what it does. You can paste the comments along with the commands.
+-   **Copy and paste.** In many terminals, Ctrl+C does not copy, because Ctrl+C stops a command (see below). Use the right mouse button instead, or Ctrl+Shift+C and Ctrl+Shift+V. This differs between terminals, so try it once.
+-   **Tab completion.** Type the first letters of a file or folder name and press Tab. The terminal completes the name for you. This saves typing and avoids typos.
+-   **Arrow up.** Press the up arrow to get your previous commands back.
+-   **Comments.** Everything after a `#` is a comment. The computer ignores it. In this tutorial, every command comes with a comment that says what it does. You can paste the comments along with the commands.
+
+Now you are ready to type your first command.
 
 ## `pwd`: where am I?
 
 ```{bash}
-# On my computer: print the folder you are in right now
+# On your computer: print the folder you are in right now
 pwd
 ```
 
-When you open a new terminal, you start in your **home folder**. The path that `pwd` prints differs between computers. A **path** is the address of a folder, with folder names separated by `/`. The [CLI workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#pwd-find-out-where-we-are) explains where your home folder is.
+When you open a new terminal, you start in your **home folder**. The path that `pwd` prints differs between computers. A **path** is the address of a folder, with folder names separated by `/`, something like `/home/mobaxterm` or `/Users/yourname`. The [CLI workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#pwd-find-out-where-we-are) explains where your home folder is.
 
 ## `ls`: what is in this folder?
 
 ```{bash}
-# On my computer: list the files and folders in the current folder
+# On your computer: list the files and folders in the current folder
 ls
 
 # The same, with more details: size, date, owner
-# Options used with ls: 
+# The options change how ls behaves:
 # -l long list with details, -h sizes in K/M/G
 ls -lh
 ```
 
 More: [ls in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#ls-list-the-contents-of-a-directory)
+
+## The parts of a command {#the-parts-of-a-command}
+
+Most commands on this page have up to three parts. Take `ls -lh data` as an example, a command like the ones you use later on this page:
+
+-   The **command name** is the program you want to run: `ls`.
+-   An **option** (or **flag**) changes how the command behaves: `-lh`. Options usually start with a `-`. Several one-letter options can be written together, so `-lh` is the same as `-l -h`.
+-   An **argument** is what the command works on, often a file or a folder: `data`. Some commands work without an argument. For example, `ls` without an argument lists the folder you are in now.
+
+Spaces separate the parts. So always put a space between the command name, the options and the arguments.
+
+When you see a new command on this page, try to find its three parts. The comment above the command tells you what the command does.
+
+More: [the structure of a command in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#the-structure-of-a-command)
 
 ## `mkdir`: make a folder
 
@@ -65,10 +86,11 @@ MobaXterm can use a temporary home folder. Then it deletes your files when you c
 :::
 
 ```{bash}
-# On my computer, in your home folder: make a folder for the practice data
+# On your computer, in your home folder: make a folder for the practice data, name it seq_qc_practice
 mkdir seq_qc_practice
 
-# Check: you should see seq_qc_practice in the list
+# Check if the new folder exists: 
+# you should see seq_qc_practice in the list
 ls -l
 ```
 
@@ -77,7 +99,7 @@ More: [mkdir in the workshop](https://ndombrowski.github.io/cli_workshop/source/
 ## `cd`: move into a folder
 
 ```{bash}
-# On my computer: move into the seq_qc_practice folder
+# Move into the seq_qc_practice folder
 cd seq_qc_practice
 
 # Check: the path should now end in seq_qc_practice
@@ -104,16 +126,16 @@ cd ~/seq_qc_practice
 pwd
 ```
 
-After every `cd`, check where you are with `pwd`. Most errors in this tutorial come from running a command in the wrong folder.
+In the beginning it is a good habit to check where you are with `pwd` after every `cd`. Most errors in this tutorial come from running a command in the wrong folder.
 
 More: [cd in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#cd-move-around-folders)
 
 ## Get the practice data: `curl` and `tar`
 
-The [practice data](#the-practice-data) comes in one file, `practice_data.tar.gz`. A `.tar.gz` file packs many files into one and compresses them, similar to a `.zip` file.
+The [practice data](#the-practice-data) can be downloaded in one single file, `practice_data.tar.gz`. A `.tar.gz` file packs many files into one and compresses them, similar to a `.zip` file.
 
 ```{bash}
-# On my computer, inside seq_qc_practice: download the practice data
+# Inside seq_qc_practice: download the practice data
 # -L: if the link sends you on to another address, follow it
 # -O: save the file under its own name, practice_data.tar.gz
 curl -L -O "https://raw.githubusercontent.com/ndombrowski/sequencing_qc/main/data/practice_data.tar.gz"
@@ -121,7 +143,8 @@ curl -L -O "https://raw.githubusercontent.com/ndombrowski/sequencing_qc/main/dat
 # Check: you should see practice_data.tar.gz, with a size of about 11M (11 megabytes)
 ls -lh
 
-# Unpack it: -x extract, -z it is compressed (.gz), -f the file name follows
+# Unpack the compressed folder. Used options: 
+# -x extract, -z it is compressed (.gz), -f the file name follows
 tar -xzf practice_data.tar.gz
 
 # Check what changed
@@ -129,35 +152,84 @@ tar -xzf practice_data.tar.gz
 ls
 
 # Check the inside of the newly generated data folder 
-# you should see one folder per sample, with names like Run1_S137 (you learn how to count the number of files later)
+# you should see one folder per sample, with names like Run1_S137 
+# (you learn how to count the number of files later)
 ls data 
 
 # Look inside one sample folder: you should see the R1 and R2 file of that sample
 ls data/Run1_S137
 ```
 
-The `data` folder contains several folders, one per sample. Each sample folder holds the sequencing files of that sample. Many sequencing centers deliver data like this. One good first sanity check is to count the number of folders or files you have per sample. Let's learn how to do this next.
+The `data` folder contains several folders, one per sample. Each sample folder holds the sequencing files of that sample. Many sequencing centers deliver data like this. One good first sanity check is to count the number of folders or files you have per sample. You learn how to do this further down.
 
-**Keep `practice_data.tar.gz`.** You copy it to Crunchomics on the next page.
+**Keep `practice_data.tar.gz`.** You copy it to Crunchomics on the next page. Also for your own data it is a good practice to keep a copy of your data in a safe location as a backup.
+
+## Paths: going deeper into folders
+
+In the last command, `data/Run1_S137` means: the folder `Run1_S137` inside the folder `data`. Each `/` takes you one folder deeper. A path that does not start with `/` or `~` begins in the folder you are in now. So `ls data/Run1_S137` only works when you are inside `seq_qc_practice`.
+
+Sequencing centers often deliver data in several layers of folders. To get a feeling for these layers, move into one sample folder and back out again:
+
+```{bash}
+# On your computer, inside seq_qc_practice
+# Move two folders deeper, into the folder of one sample
+cd data/Run1_S137
+
+# Check: the path should now end in seq_qc_practice/data/Run1_S137
+pwd
+
+# Check: you should see Run1_S137_R1.fastq.gz and Run1_S137_R2.fastq.gz
+ls
+
+# Move two folders up again: each .. is one folder up
+cd ../..
+
+# Check: the path should end in seq_qc_practice again
+pwd
+```
+
+You do not need to `cd` into a folder to look at it. From `seq_qc_practice`, `ls data/Run1_S137` shows the same files. In this tutorial, you stay in one folder and write the path to the files instead.
+
+**Tab completion helps with long paths.** Type `ls data/` and press Tab twice. The terminal shows what is inside `data`. Type the first letters of a folder name, for example `Run1_S13`, and press Tab again to complete it. On a Mac, one Tab can be enough to show the list. If several names match, Tab completes as far as it can. Press Tab twice to see the options, then type one more letter.
+
+::: {.callout-tip title="Tip: folder names with spaces (optional)" collapse="true"}
+Some folders from a sequencing center have a space in the name, for example `Project 1234`. The terminal reads a space as the end of a name, because spaces separate the [parts of a command](#the-parts-of-a-command). So `ls data/Project 1234` looks for two things, `data/Project` and `1234`, and you get `No such file or directory`.
+
+Put the path in quotes, or use Tab completion. Tab completion adds a `\` before the space, which also works:
+
+```{bash}
+# Both commands list the folder "Project 1234" inside data
+ls "data/Project 1234"
+ls data/Project\ 1234
+
+# With a wildcard, keep the * outside the quotes
+ls "data/Project 1234"/*.fastq.gz
+```
+
+There is no folder with a space in the practice data, so you cannot try this here.
+:::
 
 ## Wildcards: `*`
 
-A `*` in a file name means "any text". This lets you select many files at once.
+A `*` in a file name means "any text". It is called a **wildcard**. This way of writing file names lets you select many files at once.
 
 ```{bash}
 # Look for R1 files directly in data: data/*_R1.fastq.gz matches every file in data that ends in _R1.fastq.gz
-# You get "No such file or directory": the files are one level deeper, in the sample folders
+# You get "No such file or directory": 
+# that is because the files are not in the data folder but one level deeper, in the sample folders
 ls data/*_R1.fastq.gz
 
 # Look one level deeper: the first * stands for any folder name in data
 ls data/*/*_R1.fastq.gz
 ```
 
-The last command lists 32 files, from `data/Run1_S137/Run1_S137_R1.fastq.gz` to `data/Run2_ITS100/Run2_ITS100_R1.fastq.gz`.
+The last command lists all files in the folder, from `data/Run1_S137/Run1_S137_R1.fastq.gz` to `data/Run2_ITS100/Run2_ITS100_R1.fastq.gz`.
 
 More: [wildcards in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#wildcards)
 
 ## Counting: `wc -l` and the pipe `|`
+
+The next commands help you check quickly how many files a folder holds.
 
 `wc -l` counts lines. The pipe `|` sends the output of one command into the next command. Together, they let you count things, for example the number of files:
 
@@ -172,7 +244,7 @@ ls data/*/*.fastq.gz | wc -l
 ls data/*/*_R1.fastq.gz | wc -l
 ```
 
-You will use this a lot. After each step, you count what you have and compare it with what you expect. For now the command tells us that you work with a total of 64 files from 32 samples. That is what we would have expected and we can therefore proceed. 
+You will use this a lot. After each step, you count what you have and compare it with what you expect. For now, the command tells you that you work with 64 files from 32 samples. That is what you expect, so you can continue.
 
 If you ever see fewer samples than what you expect then this often means an incomplete download. To check this, download the file again and repeat the steps from above to see whether this recovers your files.
 
@@ -180,10 +252,10 @@ More: [wc](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#wc-
 
 ## Looking at files: `head` and `less`
 
-`seqkit_stats_practice.tsv` is a table with the number of reads in every file of the original sequencing runs. A `.tsv` file is a table where tabs separate the columns. You make a table like this yourself on the next page.
+`seqkit_stats_practice.tsv` is a table with the number of reads in every file of the original sequencing runs. A `.tsv` file is a table where tabs separate the columns. You make a table like this yourself on the next page. For now, you learn how to look inside a file.
 
 ```{bash}
-# On my computer, inside seq_qc_practice
+# On your computer, inside seq_qc_practice
 # Show the first 10 lines of the table
 head seqkit_stats_practice.tsv
 
@@ -201,13 +273,16 @@ The first line of `seqkit_stats_practice.tsv` is the header, with the column nam
 
 More: [head](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#head-view-the-first-lines-of-a-file) and [less](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#less-view-the-full-file) in the workshop
 
-
 ## Searching and selecting: `grep` and `cut`
 
-`grep` keeps only the lines that contain a word or a piece of text. `cut` keeps only some columns of a table. Try both on `seqkit_stats_practice.tsv`:
+Sometimes you want to search a file for a word, for example to count how many samples each run has. `grep` does this: it keeps only the lines that contain a word or a piece of text.
+
+Another useful command is `cut`, which keeps only some columns of a table. This command can be useful to extract only the relevant columns of a larger table.
+
+Try both on `seqkit_stats_practice.tsv`:
 
 ```{bash}
-# On my computer, inside seq_qc_practice
+# On your computer, inside seq_qc_practice
 # Show only the lines for sample Run1_S137. Expected: 2 lines, one for R1 and one for R2
 grep "Run1_S137" seqkit_stats_practice.tsv
 
@@ -219,7 +294,7 @@ grep "Run2_" seqkit_stats_practice.tsv | wc -l
 cut -f1,4 seqkit_stats_practice.tsv | head
 ```
 
-These commands become very handy once we combine them with a pipe to answer a question about your data. For example: how many reads do the blanks have?
+These commands become very handy once you combine them with a pipe to answer a question about your data. For example: how many reads do the blanks have?
 
 ```{bash}
 # The lines with Blank in the name, and only the file name and number of reads
@@ -227,7 +302,7 @@ These commands become very handy once we combine them with a pipe to answer a qu
 grep "Blank" seqkit_stats_practice.tsv | cut -f1,4
 ```
 
-`grep` is case-sensitive: `grep "blank"` finds nothing here, because the file names use `Blank`. With `grep -i`, upper and lower case count as the same. You use this on the next page.
+**Good to know**: `grep` is case-sensitive: If you had used `grep "blank"`, you would have found nothing, because the file names use `Blank`. With `grep -i`, upper and lower case count as the same. You use this on the next page.
 
 More: [grep](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#grep-find-patterns-in-data) and [cut](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#cut-extract-parts-of-each-line) in the workshop
 
@@ -240,7 +315,7 @@ If the file after `>` already exists, `>` replaces its content without a warning
 :::
 
 ```{bash}
-# On my computer, inside seq_qc_practice
+# On your computer, inside seq_qc_practice
 # Save the file names and read numbers of the blanks in a new file, blanks.tsv
 # Nothing is printed to the screen: the output goes into the file
 grep "Blank" seqkit_stats_practice.tsv | cut -f1,4 > blanks.tsv
@@ -258,12 +333,6 @@ More: [redirection in the workshop](https://ndombrowski.github.io/cli_workshop/s
 ## Tidy up: `mv` and `rmdir`
 
 `mv` moves files. Here, you move all fastq.gz files out of the sample folders, directly into `data`. The `mv` command is handy whenever you want to re-organize data for a cleaner folder structure.
-
-::: {.callout-warning}
-## Draft note (remove before publishing)
-
-`mv -n` and `rmdir data/*/` were tested in Git Bash on Windows (2026-10-20) and on WSL, not yet in MobaXterm, on a Mac or on Crunchomics. In the Windows test, `rmdir` failed once with `Device or resource busy` on one folder. This is probably a Windows file lock, not a problem with the command (not verified).
-:::
 
 ::: {.callout-important title="Important: mv also renames" collapse="false"}
 If the last name in an `mv` command is not an existing folder, `mv` renames your file to that name. For example, with a typo, `mv sample_R1.fastq.gz dta` renames the file to `dta`. To prevent this, end a folder name with `/`, as in `data/`. Then `mv` stops with an error if the folder does not exist.
@@ -288,7 +357,7 @@ More: [mv in the workshop](https://ndombrowski.github.io/cli_workshop/source/bas
 The sample folders are now empty. `rmdir` removes empty folders. It never removes a folder that still contains files, so it is a safe way to clean up:
 
 ```{bash}
-# On my computer, inside seq_qc_practice
+# On your computer, inside seq_qc_practice
 # Remove the empty sample folders: data/*/ matches every folder in data
 rmdir data/*/
 
@@ -300,16 +369,17 @@ ls data | wc -l
 
 If a sample folder still contains a file, `rmdir` says `Directory not empty` and keeps that folder. Look inside with `ls` to see what is left.
 
-## Getting unstuck
+## Getting unstuck {#getting-unstuck}
 
-- **A command does not finish, or the prompt does not come back:** press Ctrl+C to stop it.
-- **The prompt changes to `>` (or `dquote>` on a Mac) and nothing happens:** the terminal waits for the rest of a command. This often happens when a quote `"` is missing, for example when you copied only part of a line. Press Ctrl+C, then copy and paste the whole command again.
-- **`command not found`:** the computer does not know this command. Check the spelling. On your own computer, it can also mean that the tool is not installed.
-- **Nothing is printed:** for many commands, such as `mkdir`, `cd` and `mv`, no output means that the command worked. Use `ls` or `pwd` to check the result.
-- **An error message:** read it. It usually says what went wrong, for example `No such file or directory` means the file name is wrong, or you are in the wrong folder (check with `pwd` and `ls`).
-
+-   **A command does not finish, or the prompt does not come back:** press Ctrl+C to stop it.
+-   **The prompt changes to `>` (or `dquote>` on a Mac) and nothing happens:** the terminal waits for the rest of a command. This often happens when a quote `"` is missing, for example when you copied only part of a line. Press Ctrl+C, then copy and paste the whole command again.
+-   **`command not found`:** the computer does not know this command. Check the spelling. On your own computer, it can also mean that the tool is not installed.
+-   **Nothing is printed:** for many commands, such as `mkdir`, `cd` and `mv`, no output means that the command worked. Use `ls` or `pwd` to check the result.
+-   **An error message:** read it. It usually says what went wrong, for example `No such file or directory` means the file name is wrong, or you are in the wrong folder (check with `pwd` and `ls`).
 
 More: [error messages and Ctrl+C in the workshop](https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#error-messages-and-ctrlc-getting-unstuck)
+
+**Using an AI chat tool?** You do not need one for this tutorial. Every command is tested, and the boxes tell you what to expect. If you are stuck, use the tips above, or ask Nina. If you still want to ask an AI chat tool, for example to explain an error message, read [Using LLMs to understand and check code](https://ndombrowski.github.io/cli_workshop/source/llm_usage.html) in the CLI workshop first. At the UvA, use UvA AI Chat, and never paste your sequencing data into it.
 
 ## Next
 

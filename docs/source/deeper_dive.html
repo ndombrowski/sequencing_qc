@@ -78,9 +78,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a8c54b696edecc08a61f744415371247.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-7ecb8f517338ca286f29673a4347da8d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-a8c54b696edecc08a61f744415371247.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-07ba6b261650929f6c0e3bf61f8c80ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5290abd680639bf24a9d861acc7641a1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-07ba6b261650929f6c0e3bf61f8c80ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -345,7 +345,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-the-read-header-tells-you" id="toc-what-the-read-header-tells-you" class="nav-link active" data-scroll-target="#what-the-read-header-tells-you">What the read header tells you</a></li>
+  <li><a href="#what-a-fastq-file-looks-like" id="toc-what-a-fastq-file-looks-like" class="nav-link active" data-scroll-target="#what-a-fastq-file-looks-like">What a fastq file looks like</a></li>
+  <li><a href="#what-the-read-header-tells-you" id="toc-what-the-read-header-tells-you" class="nav-link" data-scroll-target="#what-the-read-header-tells-you">What the read header tells you</a></li>
+  <li><a href="#a-good-and-a-failed-sample-in-fastqc" id="toc-a-good-and-a-failed-sample-in-fastqc" class="nav-link" data-scroll-target="#a-good-and-a-failed-sample-in-fastqc">A good and a failed sample in FastQC</a>
+  <ul class="collapse">
+  <li><a href="#per-base-sequence-quality" id="toc-per-base-sequence-quality" class="nav-link" data-scroll-target="#per-base-sequence-quality">Per base sequence quality</a></li>
+  <li><a href="#per-sequence-quality-scores" id="toc-per-sequence-quality-scores" class="nav-link" data-scroll-target="#per-sequence-quality-scores">Per sequence quality scores</a></li>
+  <li><a href="#per-base-sequence-content" id="toc-per-base-sequence-content" class="nav-link" data-scroll-target="#per-base-sequence-content">Per base sequence content</a></li>
+  </ul></li>
   <li><a href="#planned-sections" id="toc-planned-sections" class="nav-link" data-scroll-target="#planned-sections">Planned sections</a></li>
   </ul>
 </nav>
@@ -383,16 +390,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This page is an outline. Only the first section is written out.</p>
+<p>The first three sections are written out. The planned sections at the end are an outline only. The barcode exercise was run on Crunchomics with the practice data (2026-10-23).</p>
+<ul>
+<li><code>zcat</code> was tested in Git Bash and MobaXterm (2026-10-22). On a Mac, <code>gzcat</code> instead of <code>zcat</code> is not tested yet.</li>
+</ul>
 </div>
 </div>
 <p>This page is for those who want to understand their data better, or who found a flag on the previous page and want to know more. It uses the practice data, which comes from a run where about 40% of the samples failed.</p>
+<section id="what-a-fastq-file-looks-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-a-fastq-file-looks-like">What a fastq file looks like</h2>
+<p>A fastq.gz file is compressed, so <code>head</code> on it shows unreadable characters. <code>zcat</code> unpacks the file and prints the text to the screen, without changing the file itself. Send its output into <code>head</code> to see only the start.</p>
+<p>On a Mac, use <code>gzcat</code> instead of <code>zcat</code>, here and in the rest of this page.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the first 4 lines of one fastq file: this is the first read</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/Run1_S137_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Every read takes up 4 lines:</p>
+<ol type="1">
+<li>The read name, or header. It starts with <code>@</code> and holds information about the sequencing machine and the run. The next section explains its parts.</li>
+<li>The sequence: the bases A, C, G and T.</li>
+<li>A <code>+</code>.</li>
+<li>The quality: one character per base. Each character stands for how sure the machine is about that base.</li>
+</ol>
+<p>Because every read has 4 lines, you can count the reads in a file. Count the lines and divide by 4:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the lines in one fastq file. Expected: 9940, so 9940 / 4 = 2485 reads</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/Run1_S137_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>On the main page, <code>seqkit</code> does this count for all files at once.</p>
+<p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#zcat-decompress-and-print-to-screen">zcat</a> and <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#exploring-the-content-of-compressed-fastq-files">fastq files</a> in the CLI workshop</p>
+</section>
 <section id="what-the-read-header-tells-you" class="level2">
 <h2 class="anchored" data-anchor-id="what-the-read-header-tells-you">What the read header tells you</h2>
 <p>Every read in a fastq file starts with a header line that begins with <code>@</code>. For Illumina data, the header holds information about where and how the read was sequenced.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The first header line of one practice file</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/Run1_S137_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The first header line of one practice file</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/Run1_S137_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>It looks something like this:</p>
 <pre><code>@M08325:104:000000000-LT57L:1:1101:15589:1335 1:N:0:GTGTATGCGT</code></pre>
@@ -440,6 +473,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>The parts after the space:</p>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 20%">
+<col style="width: 65%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Part</th>
@@ -473,11 +511,123 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Exercise:</strong> Look at the first header of a <code>Run1_</code> and a <code>Run2_</code> file. Were they sequenced on the same instrument? In the same run?</p>
 <p><strong>Exercise:</strong> The index at the end is the barcode that was used to sort the read into its sample. Count the indices in the first 1000 reads of a good sample and of a failed sample:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the barcodes in the first 1000 reads (4000 lines) of one file, most common first</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace the file name to compare different samples</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/Run1_S137_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-4000</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR % 4 == 1'</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span><span class="st">':'</span> <span class="at">-f10</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-rn</span> <span class="kw">|</span> <span class="fu">head</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the barcodes in the first 1000 reads (4000 lines) of one file, most common first</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A good sample: how many reads carry the most common barcode?</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/Run1_S137_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-4000</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR % 4 == 1'</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span><span class="st">':'</span> <span class="at">-f10</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-rn</span> <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A failed sample: compare with the good sample</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> data/Run1_S158_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-4000</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR % 4 == 1'</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span><span class="st">':'</span> <span class="at">-f10</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-rn</span> <span class="kw">|</span> <span class="fu">head</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>What do you notice? (Answer to be written: in good samples, one barcode dominates; in failed samples, the reads are spread over barcodes that differ in one letter.)</p>
+<p>What do you notice?</p>
+<div class="callout callout-style-default callout-answer callout-titled" title="Practice data: compare with your result">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Answer</span>Practice data: compare with your result
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Good sample, <code>Run1_S137</code>:</p>
+<pre><code>    919 ACGTATCATC
+     18 CCGTATCATC
+     10 TCGTATCATC
+      8 ACGTAGCATC
+      5 ACGTATCACC
+      4 GCGTATCATC
+      4 ACGTATCATT
+      4 ACGTATCATA
+      4 ACGTAACATC
+      3 ACTTATCATC</code></pre>
+<p>Failed sample, <code>Run1_S158</code>:</p>
+<pre><code>      4 TGATGTATGT
+      2 TGGTGTATGT
+      1 TTATGTATGT
+      1 TGTTGTATGT
+      1 TGATGTAAGT
+      1 GGATGTATGT</code></pre>
+<p><strong>Good sample:</strong> 919 of the 1000 reads carry the same barcode, <code>ACGTATCATC</code>. The other barcodes differ from it in one letter. In these reads, the sequencer misread one base of the barcode. The software that sorts the reads into samples allows for small reading errors like this, so these reads still end up in the right sample.</p>
+<p><strong>Failed sample:</strong> the file has only 10 reads, so the command shows all of them. Only 4 of the 10 reads carry the most common barcode, <code>TGATGTATGT</code>. The other 6 each differ from it in one letter.</p>
+<p>So in the good sample, more than 9 in 10 reads carry the exact barcode. In the failed sample, fewer than half do. When a sample has almost no reads of its own, the reads with a misread barcode make up a much larger part of the few reads it has.</p>
+<p>To check which barcode belongs to which sample, look at the sample sheet from the sequencing center.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="a-good-and-a-failed-sample-in-fastqc" class="level2">
+<h2 class="anchored" data-anchor-id="a-good-and-a-failed-sample-in-fastqc">A good and a failed sample in FastQC</h2>
+<p>This section compares the FastQC report of a good sample, S2, with a failed sample, S91.</p>
+<p>The plots below come from the full sequencing data, not from the practice data. The practice data has far fewer reads per sample. With fewer reads, each point in a plot is based on less data, so your FastQC plots of the practice data look noisier: the lines are more jagged and the boxes jump around more. Look at the overall pattern, not at single points. Your own data will likely have more reads and look closer to the plots on this page.</p>
+<p>FastQC gives every panel a green tick, an orange exclamation mark or a red cross. Its limits were made for random pieces of DNA, for example from whole genome sequencing. Amplicon reads are not random: they are copies of one short DNA region. So with amplicon data, a good sample also gets several red crosses. Here, the good and the failed sample both get a red cross on 7 of the 11 panels. Don’t count red crosses. Instead, compare a good and a suspicious sample side by side, as below.</p>
+<section id="per-base-sequence-quality" class="level3">
+<h3 class="anchored" data-anchor-id="per-base-sequence-quality">Per base sequence quality</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/fastqc_S2_per_base_quality.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Good sample: S2</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/fastqc_S91_per_base_quality.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Failed sample: S91</figcaption>
+</figure>
+</div>
+<p>This plot shows the quality along the read, from the first base (left) to the last base (right). The quality score (y-axis) says how sure the sequencer is about a base. A score of 30 means 1 wrong base in 1,000. A score of 20 means 1 wrong base in 100. The background shows how FastQC rates the scores: green is very good, orange is reasonable, red is poor.</p>
+<p>At each position:</p>
+<ul>
+<li>The yellow box holds the middle half of the reads.</li>
+<li>The red line in the box is the median.</li>
+<li>The whiskers (thin lines) show where the lowest 10% and the highest 10% of the reads start.</li>
+<li>The blue line connects the mean scores.</li>
+</ul>
+<p><strong>Good sample:</strong> the boxes stay at the top up to about base 200. After that, the quality falls, and the last bases end in the red zone. This is normal for long reads, because the sequencing chemistry wears out as the read gets longer. Later analysis steps cut off these low-quality ends. FastQC still gives a red cross.</p>
+<p><strong>Failed sample:</strong> the quality falls much earlier. At about base 70, the mean drops, and the lower whiskers already reach the red zone. The boxes are also wider along the whole read. So the reads in this sample have lower quality overall, not only at the end.</p>
+<p><strong>What to look at:</strong> where the quality starts to fall, not the color at the end of the read.</p>
+</section>
+<section id="per-sequence-quality-scores" class="level3">
+<h3 class="anchored" data-anchor-id="per-sequence-quality-scores">Per sequence quality scores</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/fastqc_S2_per_sequence_quality.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Good sample: S2</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/fastqc_S91_per_sequence_quality.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Failed sample: S91</figcaption>
+</figure>
+</div>
+<p>This plot gives each read one number: its mean quality over all its bases. The x-axis shows the mean quality, and the y-axis shows how many reads have it.</p>
+<p><strong>Good sample:</strong> one tall peak at a quality of about 36. There is a small bump at 21 to 23: a few reads with low quality. Every run has some of these, so this is normal.</p>
+<p><strong>Failed sample:</strong> two peaks. One is at 34, and a second one is at 21 to 22. About a quarter of the reads have a low quality.</p>
+<p>FastQC gives both samples a green tick, because it only checks where the highest peak is. Still, this plot shows the difference between the samples most clearly.</p>
+<p><strong>What to look at:</strong> one peak at high quality is good. A second peak at low quality means that a large part of the reads is poor.</p>
+</section>
+<section id="per-base-sequence-content" class="level3">
+<h3 class="anchored" data-anchor-id="per-base-sequence-content">Per base sequence content</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/fastqc_S2_per_base_content.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Good sample: S2</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/fastqc_S91_per_base_content.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Failed sample: S91</figcaption>
+</figure>
+</div>
+<p>This plot shows, for each position in the read, how many percent of the reads have an A, C, G or T. In random DNA, the four lines would run flat and close together. Amplicon reads are different. They all start with the same primer, and they come from a small number of organisms.</p>
+<p><strong>Good sample:</strong> in the first 9 positions, one base reaches almost 100% at each position. Read the peaks from left to right: C, T, T, G, G, T, C, A, T. This is the start of the ITS1F primer, <code>CTTGGTCATTTAGAGGAAGTAA</code>. After the primer, the lines go up and down, because most reads come from a few organisms. FastQC gives a red cross, but for amplicon data this is expected.</p>
+<p><strong>Failed sample:</strong> the primer is not clearly visible. At position 1, about 57% of the reads have a G and about 34% have a C. The C fits the ITS1F primer (<code>CTT...</code>). The G fits the 16S primer 515F (<code>GTG...</code>). So this ITS sample also holds 16S reads, probably from other samples on the same run.</p>
+<p><strong>What to look at:</strong> in amplicon data, the first bases of the reads should spell out your primer. If they don’t, the sample holds reads that don’t belong there.</p>
+<p>More: <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/">FastQC help, one page per panel</a></p>
+</section>
 </section>
 <section id="planned-sections" class="level2">
 <h2 class="anchored" data-anchor-id="planned-sections">Planned sections</h2>

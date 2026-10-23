@@ -7,6 +7,9 @@ PLAN.md
 data/*
 !data/practice_data.tar.gz
 
+# FastQC reports from full runs: only cropped screenshots go online
+img/*_fastqc.html
+
 # Quarto
 /.quarto/
 **/*.quarto_ipynb

@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a8c54b696edecc08a61f744415371247.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-7ecb8f517338ca286f29673a4347da8d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-a8c54b696edecc08a61f744415371247.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-07ba6b261650929f6c0e3bf61f8c80ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5290abd680639bf24a9d861acc7641a1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-07ba6b261650929f6c0e3bf61f8c80ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -347,15 +347,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#the-practice-data" id="toc-the-practice-data" class="nav-link active" data-scroll-target="#the-practice-data">The practice data</a></li>
+  <li><a href="#setting-up-a-terminal" id="toc-setting-up-a-terminal" class="nav-link" data-scroll-target="#setting-up-a-terminal">Setting up a terminal</a></li>
   <li><a href="#the-terminal-and-the-prompt" id="toc-the-terminal-and-the-prompt" class="nav-link" data-scroll-target="#the-terminal-and-the-prompt">The terminal and the prompt</a></li>
   <li><a href="#pwd-where-am-i" id="toc-pwd-where-am-i" class="nav-link" data-scroll-target="#pwd-where-am-i"><code>pwd</code>: where am I?</a></li>
   <li><a href="#ls-what-is-in-this-folder" id="toc-ls-what-is-in-this-folder" class="nav-link" data-scroll-target="#ls-what-is-in-this-folder"><code>ls</code>: what is in this folder?</a></li>
+  <li><a href="#the-parts-of-a-command" id="toc-the-parts-of-a-command" class="nav-link" data-scroll-target="#the-parts-of-a-command">The parts of a command</a></li>
   <li><a href="#mkdir-make-a-folder" id="toc-mkdir-make-a-folder" class="nav-link" data-scroll-target="#mkdir-make-a-folder"><code>mkdir</code>: make a folder</a></li>
   <li><a href="#cd-move-into-a-folder" id="toc-cd-move-into-a-folder" class="nav-link" data-scroll-target="#cd-move-into-a-folder"><code>cd</code>: move into a folder</a></li>
   <li><a href="#get-the-practice-data-curl-and-tar" id="toc-get-the-practice-data-curl-and-tar" class="nav-link" data-scroll-target="#get-the-practice-data-curl-and-tar">Get the practice data: <code>curl</code> and <code>tar</code></a></li>
+  <li><a href="#paths-going-deeper-into-folders" id="toc-paths-going-deeper-into-folders" class="nav-link" data-scroll-target="#paths-going-deeper-into-folders">Paths: going deeper into folders</a></li>
   <li><a href="#wildcards" id="toc-wildcards" class="nav-link" data-scroll-target="#wildcards">Wildcards: <code>*</code></a></li>
   <li><a href="#counting-wc--l-and-the-pipe" id="toc-counting-wc--l-and-the-pipe" class="nav-link" data-scroll-target="#counting-wc--l-and-the-pipe">Counting: <code>wc -l</code> and the pipe <code>|</code></a></li>
   <li><a href="#looking-at-files-head-and-less" id="toc-looking-at-files-head-and-less" class="nav-link" data-scroll-target="#looking-at-files-head-and-less">Looking at files: <code>head</code> and <code>less</code></a></li>
+  <li><a href="#searching-and-selecting-grep-and-cut" id="toc-searching-and-selecting-grep-and-cut" class="nav-link" data-scroll-target="#searching-and-selecting-grep-and-cut">Searching and selecting: <code>grep</code> and <code>cut</code></a></li>
+  <li><a href="#saving-output-to-a-file" id="toc-saving-output-to-a-file" class="nav-link" data-scroll-target="#saving-output-to-a-file">Saving output to a file: <code>&gt;</code></a></li>
   <li><a href="#tidy-up-mv-and-rmdir" id="toc-tidy-up-mv-and-rmdir" class="nav-link" data-scroll-target="#tidy-up-mv-and-rmdir">Tidy up: <code>mv</code> and <code>rmdir</code></a></li>
   <li><a href="#getting-unstuck" id="toc-getting-unstuck" class="nav-link" data-scroll-target="#getting-unstuck">Getting unstuck</a></li>
   <li><a href="#next" id="toc-next" class="nav-link" data-scroll-target="#next">Next</a></li>
@@ -385,14 +390,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This page covers the few commands you need for this tutorial. Each command links to the matching section of the <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html">CLI workshop</a>, where you find more explanation and exercises.</p>
+<p>This page covers only the few commands you need for this tutorial. For most of them, you do not need to understand every detail. Copy the commands, and check that your output matches what the page tells you to expect. The exception is moving around: <code>pwd</code>, <code>ls</code>, <code>cd</code> and paths. Take the time to understand these. You use them all the time, and they help you find your way when a command fails. If you want to learn the command line properly, for example to explore your own data in more depth, follow the <a href="https://ndombrowski.github.io/cli_workshop/">CLI workshop</a>. Each command on this page also links to the matching section of the workshop, where you find more explanation and exercises.</p>
 <p>On this page, you work on <strong>your own computer</strong>. You download a small set of practice data and try every command on it. On the next page, <a href="../source/first_look.html">A first look at your data</a>, you copy the same practice data to Crunchomics and do the full check. After that, you repeat the check with your own data.</p>
-<p>If you have never opened a terminal, first follow <a href="https://ndombrowski.github.io/cli_workshop/source/installation.html">Before you start</a> of the CLI workshop. On Windows, use a local terminal in MobaXterm. On a Mac, use the Terminal app, which you find in Applications, in the Utilities folder. The Mac terminal uses a slightly different shell (zsh), the program that reads your commands. So a few error messages may look a bit different from the ones on this page.</p>
-<p>If something goes wrong, see <a href="#getting-unstuck">Getting unstuck</a> at the bottom of this page.</p>
 <section id="the-practice-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-practice-data">The practice data</h2>
-<p>The practice data comes from an ITS (a DNA region used to identify fungi) amplicon sequencing project from different soil samples. It comes from two real sequencing runs, Run1 and Run2, and it has a real problem that you find on the next page. The sample IDs are randomized, and every file was reduced to 2% of its reads to keep it small.</p>
-<p>You get 32 samples. The data is <strong>paired-end</strong>: the sequencer reads each DNA fragment from both ends. So every sample has two files:</p>
+<p>The practice data comes from an ITS (a DNA region used to identify fungi) amplicon sequencing project from different soil samples. It comes from two real sequencing runs, Run1 and Run2, and it has a real problem that you explore on the next page. The sample IDs are randomized, and every file was reduced to 2% of its reads to keep it small.</p>
+<p>You will work with 32 samples that were sequenced with Illumina, a widely used type of sequencing machine. The data is <strong>paired-end</strong>: the sequencer reads each DNA fragment from both ends. So every sample has two files:</p>
 <ul>
 <li><code>..._R1.fastq.gz</code>: the reads from one end of the fragments (the forward reads).</li>
 <li><code>..._R2.fastq.gz</code>: the reads from the other end (the reverse reads).</li>
@@ -400,9 +403,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In total, that makes 64 files. A <code>.fastq</code> file is a text file that holds every read, with a quality score for each base. The <code>.gz</code> at the end means that the file is compressed to save space.</p>
 <p>The practice data also contains <code>seqkit_stats_practice.tsv</code>. This is a table with the number of reads per file, for all samples of the original two runs. You look at it further down this page.</p>
 </section>
+<section id="setting-up-a-terminal" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-a-terminal">Setting up a terminal</h2>
+<p>For this tutorial you need <strong>set up a terminal</strong>: a window in which you type commands (instructions to the computer) as text, instead of clicking on buttons and menus. If you have never opened a terminal, first follow <a href="https://ndombrowski.github.io/cli_workshop/source/installation.html">Before you start</a> of the CLI workshop:</p>
+<ul>
+<li>On Windows, use a local terminal in MobaXterm.</li>
+<li>On a Mac, use the Terminal app, which you find in Applications, in the Utilities folder. The Mac terminal uses a slightly different shell (zsh), the program that reads your commands. So a few error messages may look a bit different from the ones on this page.</li>
+</ul>
+<p>If something goes wrong, see <a href="#getting-unstuck">Getting unstuck</a> at the bottom of this page.</p>
+</section>
 <section id="the-terminal-and-the-prompt" class="level2">
 <h2 class="anchored" data-anchor-id="the-terminal-and-the-prompt">The terminal and the prompt</h2>
-<p>In the terminal, you type a command and press Enter. The computer runs it and prints the result as text. When the computer is ready for the next command, it shows the <strong>prompt</strong>, a line that usually ends with <code>$</code>.</p>
+<p>The terminal passes what you type to a <strong>shell</strong>, the program that reads your commands and tells the computer what to do. When the computer is ready for the next command, it shows the <strong>prompt</strong>, a line that usually ends with <code>$</code>.</p>
 <p>A few things that make life easier:</p>
 <ul>
 <li><strong>Copy and paste.</strong> In many terminals, Ctrl+C does not copy, because Ctrl+C stops a command (see below). Use the right mouse button instead, or Ctrl+Shift+C and Ctrl+Shift+V. This differs between terminals, so try it once.</li>
@@ -410,27 +422,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Arrow up.</strong> Press the up arrow to get your previous commands back.</li>
 <li><strong>Comments.</strong> Everything after a <code>#</code> is a comment. The computer ignores it. In this tutorial, every command comes with a comment that says what it does. You can paste the comments along with the commands.</li>
 </ul>
+<p>Now you are ready to type your first command.</p>
 </section>
 <section id="pwd-where-am-i" class="level2">
 <h2 class="anchored" data-anchor-id="pwd-where-am-i"><code>pwd</code>: where am I?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On my computer: print the folder you are in right now</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer: print the folder you are in right now</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>When you open a new terminal, you start in your <strong>home folder</strong>. The path that <code>pwd</code> prints differs between computers. A <strong>path</strong> is the address of a folder, with folder names separated by <code>/</code>. The <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#pwd-find-out-where-we-are">CLI workshop</a> explains where your home folder is.</p>
+<p>When you open a new terminal, you start in your <strong>home folder</strong>. The path that <code>pwd</code> prints differs between computers. A <strong>path</strong> is the address of a folder, with folder names separated by <code>/</code>, something like <code>/home/mobaxterm</code> or <code>/Users/yourname</code>. The <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#pwd-find-out-where-we-are">CLI workshop</a> explains where your home folder is.</p>
 </section>
 <section id="ls-what-is-in-this-folder" class="level2">
 <h2 class="anchored" data-anchor-id="ls-what-is-in-this-folder"><code>ls</code>: what is in this folder?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On my computer: list the files and folders in the current folder</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer: list the files and folders in the current folder</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The same, with more details: size, date, owner</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Options used with ls: </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The options change how ls behaves:</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># -l long list with details, -h sizes in K/M/G</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#ls-list-the-contents-of-a-directory">ls in the workshop</a></p>
+</section>
+<section id="the-parts-of-a-command" class="level2">
+<h2 class="anchored" data-anchor-id="the-parts-of-a-command">The parts of a command</h2>
+<p>Most commands on this page have up to three parts. Take <code>ls -lh data</code> as an example, a command like the ones you use later on this page:</p>
+<ul>
+<li>The <strong>command name</strong> is the program you want to run: <code>ls</code>.</li>
+<li>An <strong>option</strong> (or <strong>flag</strong>) changes how the command behaves: <code>-lh</code>. Options usually start with a <code>-</code>. Several one-letter options can be written together, so <code>-lh</code> is the same as <code>-l -h</code>.</li>
+<li>An <strong>argument</strong> is what the command works on, often a file or a folder: <code>data</code>. Some commands work without an argument. For example, <code>ls</code> without an argument lists the folder you are in now.</li>
+</ul>
+<p>Spaces separate the parts. So always put a space between the command name, the options and the arguments.</p>
+<p>When you see a new command on this page, try to find its three parts. The comment above the command tells you what the command does.</p>
+<p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#the-structure-of-a-command">the structure of a command in the workshop</a></p>
 </section>
 <section id="mkdir-make-a-folder" class="level2">
 <h2 class="anchored" data-anchor-id="mkdir-make-a-folder"><code>mkdir</code>: make a folder</h2>
@@ -451,18 +476,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On my computer, in your home folder: make a folder for the practice data</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, in your home folder: make a folder for the practice data, name it seq_qc_practice</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> seq_qc_practice</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: you should see seq_qc_practice in the list</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the new folder exists: </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># you should see seq_qc_practice in the list</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#mkdir-make-new-folders">mkdir in the workshop</a></p>
 </section>
 <section id="cd-move-into-a-folder" class="level2">
 <h2 class="anchored" data-anchor-id="cd-move-into-a-folder"><code>cd</code>: move into a folder</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On my computer: move into the seq_qc_practice folder</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Move into the seq_qc_practice folder</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> seq_qc_practice</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: the path should now end in seq_qc_practice</span></span>
@@ -486,29 +512,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/seq_qc_practice</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>After every <code>cd</code>, check where you are with <code>pwd</code>. Most errors in this tutorial come from running a command in the wrong folder.</p>
+<p>In the beginning it is a good habit to check where you are with <code>pwd</code> after every <code>cd</code>. Most errors in this tutorial come from running a command in the wrong folder.</p>
 <p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#cd-move-around-folders">cd in the workshop</a></p>
 </section>
 <section id="get-the-practice-data-curl-and-tar" class="level2">
 <h2 class="anchored" data-anchor-id="get-the-practice-data-curl-and-tar">Get the practice data: <code>curl</code> and <code>tar</code></h2>
-<p>The <a href="#the-practice-data">practice data</a> comes in one file, <code>practice_data.tar.gz</code>. A <code>.tar.gz</code> file packs many files into one and compresses them, similar to a <code>.zip</code> file.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Draft note (remove before publishing)
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><code>curl -L -O</code> and <code>tar -xzf</code> are not tested yet in MobaXterm and on a Mac.</li>
-</ul>
-</div>
-</div>
+<p>The <a href="#the-practice-data">practice data</a> can be downloaded in one single file, <code>practice_data.tar.gz</code>. A <code>.tar.gz</code> file packs many files into one and compresses them, similar to a <code>.zip</code> file.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On my computer, inside seq_qc_practice: download the practice data</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inside seq_qc_practice: download the practice data</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># -L: if the link sends you on to another address, follow it</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -O: save the file under its own name, practice_data.tar.gz</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">-O</span> <span class="st">"https://raw.githubusercontent.com/ndombrowski/sequencing_qc/main/data/practice_data.tar.gz"</span></span>
@@ -516,89 +527,190 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: you should see practice_data.tar.gz, with a size of about 11M (11 megabytes)</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Unpack it: -x extract, -z it is compressed (.gz), -f the file name follows</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzf</span> practice_data.tar.gz</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what changed</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># you should see data, practice_data.tar.gz and seqkit_stats_practice.tsv</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the inside of the newly generated data folder </span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># you should see one folder per sample, with names like Run1_S137 (you learn how to count the number of files later)</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data </span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Look inside one sample folder: you should see the R1 and R2 file of that sample</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/Run1_S137</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Unpack the compressed folder. Used options: </span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># -x extract, -z it is compressed (.gz), -f the file name follows</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzf</span> practice_data.tar.gz</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what changed</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># you should see data, practice_data.tar.gz and seqkit_stats_practice.tsv</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the inside of the newly generated data folder </span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># you should see one folder per sample, with names like Run1_S137 </span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co"># (you learn how to count the number of files later)</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Look inside one sample folder: you should see the R1 and R2 file of that sample</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/Run1_S137</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The <code>data</code> folder contains several folders, one per sample. Each sample folder holds the sequencing files of that sample. Many sequencing centers deliver data like this. One good first sanity check is to count the number of folders or files you have per sample. Let’s learn how to do this next.</p>
-<p><strong>Keep <code>practice_data.tar.gz</code>.</strong> You copy it to Crunchomics on the next page.</p>
+<p>The <code>data</code> folder contains several folders, one per sample. Each sample folder holds the sequencing files of that sample. Many sequencing centers deliver data like this. One good first sanity check is to count the number of folders or files you have per sample. You learn how to do this further down.</p>
+<p><strong>Keep <code>practice_data.tar.gz</code>.</strong> You copy it to Crunchomics on the next page. Also for your own data it is a good practice to keep a copy of your data in a safe location as a backup.</p>
+</section>
+<section id="paths-going-deeper-into-folders" class="level2">
+<h2 class="anchored" data-anchor-id="paths-going-deeper-into-folders">Paths: going deeper into folders</h2>
+<p>In the last command, <code>data/Run1_S137</code> means: the folder <code>Run1_S137</code> inside the folder <code>data</code>. Each <code>/</code> takes you one folder deeper. A path that does not start with <code>/</code> or <code>~</code> begins in the folder you are in now. So <code>ls data/Run1_S137</code> only works when you are inside <code>seq_qc_practice</code>.</p>
+<p>Sequencing centers often deliver data in several layers of folders. To get a feeling for these layers, move into one sample folder and back out again:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, inside seq_qc_practice</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Move two folders deeper, into the folder of one sample</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> data/Run1_S137</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: the path should now end in seq_qc_practice/data/Run1_S137</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: you should see Run1_S137_R1.fastq.gz and Run1_S137_R2.fastq.gz</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Move two folders up again: each .. is one folder up</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../..</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: the path should end in seq_qc_practice again</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You do not need to <code>cd</code> into a folder to look at it. From <code>seq_qc_practice</code>, <code>ls data/Run1_S137</code> shows the same files. In this tutorial, you stay in one folder and write the path to the files instead.</p>
+<p><strong>Tab completion helps with long paths.</strong> Type <code>ls data/</code> and press Tab twice. The terminal shows what is inside <code>data</code>. Type the first letters of a folder name, for example <code>Run1_S13</code>, and press Tab again to complete it. On a Mac, one Tab can be enough to show the list. If several names match, Tab completes as far as it can. Press Tab twice to see the options, then type one more letter.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Tip: folder names with spaces (optional)">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Tip: folder names with spaces (optional)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Some folders from a sequencing center have a space in the name, for example <code>Project 1234</code>. The terminal reads a space as the end of a name, because spaces separate the <a href="#the-parts-of-a-command">parts of a command</a>. So <code>ls data/Project 1234</code> looks for two things, <code>data/Project</code> and <code>1234</code>, and you get <code>No such file or directory</code>.</p>
+<p>Put the path in quotes, or use Tab completion. Tab completion adds a <code>\</code> before the space, which also works:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Both commands list the folder "Project 1234" inside data</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="st">"data/Project 1234"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/Project\ 1234</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># With a wildcard, keep the * outside the quotes</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="st">"data/Project 1234"</span>/<span class="pp">*</span>.fastq.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>There is no folder with a space in the practice data, so you cannot try this here.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="wildcards" class="level2">
 <h2 class="anchored" data-anchor-id="wildcards">Wildcards: <code>*</code></h2>
-<p>A <code>*</code> in a file name means “any text”. This lets you select many files at once.</p>
+<p>A <code>*</code> in a file name means “any text”. It is called a <strong>wildcard</strong>. This way of writing file names lets you select many files at once.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look for R1 files directly in data: data/*_R1.fastq.gz matches every file in data that ends in _R1.fastq.gz</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># You get "No such file or directory": the files are one level deeper, in the sample folders</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>_R1.fastq.gz</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Look one level deeper: the first * stands for any folder name in data</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>/<span class="pp">*</span>_R1.fastq.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look for R1 files directly in data: data/*_R1.fastq.gz matches every file in data that ends in _R1.fastq.gz</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># You get "No such file or directory": </span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># that is because the files are not in the data folder but one level deeper, in the sample folders</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>_R1.fastq.gz</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Look one level deeper: the first * stands for any folder name in data</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>/<span class="pp">*</span>_R1.fastq.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The last command lists 32 files, from <code>data/Run1_S137/Run1_S137_R1.fastq.gz</code> to <code>data/Run2_ITS100/Run2_ITS100_R1.fastq.gz</code>.</p>
+<p>The last command lists all files in the folder, from <code>data/Run1_S137/Run1_S137_R1.fastq.gz</code> to <code>data/Run2_ITS100/Run2_ITS100_R1.fastq.gz</code>.</p>
 <p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#wildcards">wildcards in the workshop</a></p>
 </section>
 <section id="counting-wc--l-and-the-pipe" class="level2">
 <h2 class="anchored" data-anchor-id="counting-wc--l-and-the-pipe">Counting: <code>wc -l</code> and the pipe <code>|</code></h2>
+<p>The next commands help you check quickly how many files a folder holds.</p>
 <p><code>wc -l</code> counts lines. The pipe <code>|</code> sends the output of one command into the next command. Together, they let you count things, for example the number of files:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, inside seq_qc_practice</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the fastq.gz files in the sample folders: </span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># when ls sends its output into a pipe, it prints one name per line, and wc -l counts the lines</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Expected: 64</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>/<span class="pp">*</span>.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Count only the R1 files. Expected: 32</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>/<span class="pp">*</span>_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, inside seq_qc_practice</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the fastq.gz files in the sample folders: </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># when ls sends its output into a pipe, it prints one name per line, and wc -l counts the lines</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Expected: 64</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>/<span class="pp">*</span>.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Count only the R1 files. Expected: 32</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>/<span class="pp">*</span>_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>You will use this a lot. After each step, you count what you have and compare it with what you expect. For now the command tells us that you work with a total of 64 files from 32 samples. That is what we would have expected and we can therefore proceed.</p>
+<p>You will use this a lot. After each step, you count what you have and compare it with what you expect. For now, the command tells you that you work with 64 files from 32 samples. That is what you expect, so you can continue.</p>
 <p>If you ever see fewer samples than what you expect then this often means an incomplete download. To check this, download the file again and repeat the steps from above to see whether this recovers your files.</p>
 <p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#wc-count-things">wc</a> and <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#pipes">pipes</a> in the workshop</p>
 </section>
 <section id="looking-at-files-head-and-less" class="level2">
 <h2 class="anchored" data-anchor-id="looking-at-files-head-and-less">Looking at files: <code>head</code> and <code>less</code></h2>
-<p><code>seqkit_stats_practice.tsv</code> is a table with the number of reads in every file of the original sequencing runs. A <code>.tsv</code> file is a table where tabs separate the columns. You make a table like this yourself on the next page.</p>
+<p><code>seqkit_stats_practice.tsv</code> is a table with the number of reads in every file of the original sequencing runs. A <code>.tsv</code> file is a table where tabs separate the columns. You make a table like this yourself on the next page. For now, you learn how to look inside a file.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On my computer, inside seq_qc_practice</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the first 10 lines of the table</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> seqkit_stats_practice.tsv</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the lines. Expected: 729 (one header line and 728 files)</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> seqkit_stats_practice.tsv</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Scroll through the whole table. Use the arrow keys, and press q to quit</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># -S keeps long lines on one line, so tables stay readable</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> <span class="at">-S</span> seqkit_stats_practice.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, inside seq_qc_practice</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the first 10 lines of the table</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> seqkit_stats_practice.tsv</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the lines. Expected: 729 (one header line and 728 files)</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> seqkit_stats_practice.tsv</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Scroll through the whole table. Use the arrow keys, and press q to quit</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># -S keeps long lines on one line, so tables stay readable</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> <span class="at">-S</span> seqkit_stats_practice.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this file you work with 728 files, not 64. That is because the table covers all 364 samples of the original runs, and the practice data is 32 of them.</p>
 <p>The first line of <code>seqkit_stats_practice.tsv</code> is the header, with the column names. The fourth column, <code>num_seqs</code>, is the number of reads in each file.</p>
 <p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#head-view-the-first-lines-of-a-file">head</a> and <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#less-view-the-full-file">less</a> in the workshop</p>
 </section>
-<section id="tidy-up-mv-and-rmdir" class="level2">
-<h2 class="anchored" data-anchor-id="tidy-up-mv-and-rmdir">Tidy up: <code>mv</code> and <code>rmdir</code></h2>
-<p><code>mv</code> moves files. Here, you move all fastq.gz files out of the sample folders, directly into <code>data</code>. The <code>mv</code> command is handy whenever you want to re-organize data for a cleaner folder structure.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
+<section id="searching-and-selecting-grep-and-cut" class="level2">
+<h2 class="anchored" data-anchor-id="searching-and-selecting-grep-and-cut">Searching and selecting: <code>grep</code> and <code>cut</code></h2>
+<p>Sometimes you want to search a file for a word, for example to count how many samples each run has. <code>grep</code> does this: it keeps only the lines that contain a word or a piece of text.</p>
+<p>Another useful command is <code>cut</code>, which keeps only some columns of a table. This command can be useful to extract only the relevant columns of a larger table.</p>
+<p>Try both on <code>seqkit_stats_practice.tsv</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, inside seq_qc_practice</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Show only the lines for sample Run1_S137. Expected: 2 lines, one for R1 and one for R2</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"Run1_S137"</span> seqkit_stats_practice.tsv</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the lines of run 2. Expected: 248 (124 samples, with an R1 and an R2 file each)</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"Run2_"</span> seqkit_stats_practice.tsv <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep only column 1 (the file name) and column 4 (the number of reads)</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># -f: the columns to keep, separated by a comma</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f1,4</span> seqkit_stats_practice.tsv <span class="kw">|</span> <span class="fu">head</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>These commands become very handy once you combine them with a pipe to answer a question about your data. For example: how many reads do the blanks have?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The lines with Blank in the name, and only the file name and number of reads</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Expected: 8 lines (4 blanks, R1 and R2), with between 41 and 4561 reads</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"Blank"</span> seqkit_stats_practice.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f1,4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Good to know</strong>: <code>grep</code> is case-sensitive: If you had used <code>grep "blank"</code>, you would have found nothing, because the file names use <code>Blank</code>. With <code>grep -i</code>, upper and lower case count as the same. You use this on the next page.</p>
+<p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#grep-find-patterns-in-data">grep</a> and <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#cut-extract-parts-of-each-line">cut</a> in the workshop</p>
+</section>
+<section id="saving-output-to-a-file" class="level2">
+<h2 class="anchored" data-anchor-id="saving-output-to-a-file">Saving output to a file: <code>&gt;</code></h2>
+<p>So far, every command printed its result to the screen. With <code>&gt;</code>, you save the result in a file instead. On the next page, you use this to save your read counts.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Important: > overwrites without asking">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Draft note (remove before publishing)
+<span class="screen-reader-only">Important</span>Important: &gt; overwrites without asking
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p><code>mv -n</code> and <code>rmdir data/*/</code> were tested in Git Bash on Windows (2026-10-20) and on WSL, not yet in MobaXterm, on a Mac or on Crunchomics. In the Windows test, <code>rmdir</code> failed once with <code>Device or resource busy</code> on one folder. This is probably a Windows file lock, not a problem with the command (not verified).</p>
+<p>If the file after <code>&gt;</code> already exists, <code>&gt;</code> replaces its content without a warning. Check the file name before you press Enter.</p>
 </div>
 </div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, inside seq_qc_practice</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the file names and read numbers of the blanks in a new file, blanks.tsv</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Nothing is printed to the screen: the output goes into the file</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"Blank"</span> seqkit_stats_practice.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f1,4</span> <span class="op">&gt;</span> blanks.tsv</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: blanks.tsv is there</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: 8 lines, the same as on the screen before</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> blanks.tsv</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> blanks.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#io-redirection-to-new-files">redirection in the workshop</a></p>
+</section>
+<section id="tidy-up-mv-and-rmdir" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-up-mv-and-rmdir">Tidy up: <code>mv</code> and <code>rmdir</code></h2>
+<p><code>mv</code> moves files. Here, you move all fastq.gz files out of the sample folders, directly into <code>data</code>. The <code>mv</code> command is handy whenever you want to re-organize data for a cleaner folder structure.</p>
 <div class="callout callout-style-default callout-important callout-titled" title="Important: mv also renames">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -616,29 +728,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, inside seq_qc_practice</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Move all fastq.gz files from the sample folders up into the data folder</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -n: never overwrite a file that already exists in data</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-n</span> data/<span class="pp">*</span>/<span class="pp">*</span>.fastq.gz data/</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: count the fastq.gz files directly in data. Expected: 64</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: count the fastq.gz files left in the sample folders. Expected: 0</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># You also see "ls: cannot access ... No such file or directory". That is fine: there are no files left to list</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>/<span class="pp">*</span>.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, inside seq_qc_practice</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Move all fastq.gz files from the sample folders up into the data folder</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -n: never overwrite a file that already exists in data</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-n</span> data/<span class="pp">*</span>/<span class="pp">*</span>.fastq.gz data/</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: count the fastq.gz files directly in data. Expected: 64</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: count the fastq.gz files left in the sample folders. Expected: 0</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># You also see "ls: cannot access ... No such file or directory". That is fine: there are no files left to list</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/<span class="pp">*</span>/<span class="pp">*</span>.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#mv-moving-and-renaming-data">mv in the workshop</a></p>
 <p>The sample folders are now empty. <code>rmdir</code> removes empty folders. It never removes a folder that still contains files, so it is a safe way to clean up:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On my computer, inside seq_qc_practice</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the empty sample folders: data/*/ matches every folder in data</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> data/<span class="pp">*</span>/</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: look at the first names, and count everything in data</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Expected: only fastq.gz files, 64 in total</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data <span class="kw">|</span> <span class="fu">head</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On your computer, inside seq_qc_practice</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the empty sample folders: data/*/ matches every folder in data</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> data/<span class="pp">*</span>/</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: look at the first names, and count everything in data</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Expected: only fastq.gz files, 64 in total</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data <span class="kw">|</span> <span class="fu">head</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If a sample folder still contains a file, <code>rmdir</code> says <code>Directory not empty</code> and keeps that folder. Look inside with <code>ls</code> to see what is left.</p>
 </section>
@@ -652,6 +764,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>An error message:</strong> read it. It usually says what went wrong, for example <code>No such file or directory</code> means the file name is wrong, or you are in the wrong folder (check with <code>pwd</code> and <code>ls</code>).</li>
 </ul>
 <p>More: <a href="https://ndombrowski.github.io/cli_workshop/source/bash_intro.html#error-messages-and-ctrlc-getting-unstuck">error messages and Ctrl+C in the workshop</a></p>
+<p><strong>Using an AI chat tool?</strong> You do not need one for this tutorial. Every command is tested, and the boxes tell you what to expect. If you are stuck, use the tips above, or ask Nina. If you still want to ask an AI chat tool, for example to explain an error message, read <a href="https://ndombrowski.github.io/cli_workshop/source/llm_usage.html">Using LLMs to understand and check code</a> in the CLI workshop first. At the UvA, use UvA AI Chat, and never paste your sequencing data into it.</p>
 </section>
 <section id="next" class="level2">
 <h2 class="anchored" data-anchor-id="next">Next</h2>

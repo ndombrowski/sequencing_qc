@@ -43,9 +43,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-a8c54b696edecc08a61f744415371247.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-7ecb8f517338ca286f29673a4347da8d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-a8c54b696edecc08a61f744415371247.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-07ba6b261650929f6c0e3bf61f8c80ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-5290abd680639bf24a9d861acc7641a1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-07ba6b261650929f6c0e3bf61f8c80ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -340,38 +340,39 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>You just received sequencing data. This short tutorial helps you take a first look at it, shortly after receiving it, and decide one thing: does anything look off?</p>
+<p>This short tutorial is designed to help you take a first look at your sequencing data, shortly after receiving it, and decide one thing: does anything look off?</p>
 <p>To follow this tutorial you do not need to know the command line. You copy and paste a small number of commands, and you look at a few numbers and one report. You first work through all steps with practice data from a real sequencing run with a real problem, and then repeat them with your own data.</p>
 <section id="why-look-at-your-data-right-away" class="level2">
 <h2 class="anchored" data-anchor-id="why-look-at-your-data-right-away">Why look at your data right away?</h2>
-<p>Assume you send some data of for sequencing. It often takes some weeks to get the sequencing data back and you have other projects to follow up. Often this means that the data won’t get inspected months after receiving it. However, after you finally find time to start your analysis workflow you realize something is wrong, 40% of samples have very few reads and you have to figure out what is going on.</p>
-<p>If you wait for a long time inspecting the quality of your sequencing data it can become much harder to figure out what went wrong, or how to fix it. Maybe the PCR products are no longer available, maybe you realize your lab notes are incomplete or the person at the sequencing center who handle the data is gone.</p>
-<p>If you look at the read numbers in the first week, the problem would have been visible in five minutes, while it still might be easier to fix a potential issue.</p>
+<p>Assume you send some data of for sequencing. It often takes some weeks to get the sequencing data back and you have other projects to work on. Often this means that the data won’t get inspected months after receiving it. However, after you finally find some time to start your analysis you realize something is wrong, and that many of your samples have very few reads and you have to figure out what is going on.</p>
+<p>This can become a problem: If you wait for a long time to inspect the quality of your sequencing data it can become much harder to figure out what went wrong, or how to fix it. Maybe the PCR products are no longer available, maybe you realize your lab notes are incomplete or that the person at the sequencing center who handled the data is gone.</p>
+<p>If you look at the read numbers in the first week, the problem would have been visible much faster, while it still might be easier to fix a potential issue.</p>
 </section>
 <section id="what-you-will-do" class="level2">
 <h2 class="anchored" data-anchor-id="what-you-will-do">What you will do</h2>
 <ol type="1">
+<li>Learn some basic commands to interact with your computer</li>
 <li>Copy data to Crunchomics, the UvA computer cluster</li>
 <li>Count the reads in every sample, and check for samples with far fewer reads than the rest</li>
-<li>Make a quality report for all samples with FastQC and MultiQC</li>
-<li>Decide: everything looks fine, or something needs a closer look. For the second case, the tutorial gives a checklist and says who to contact</li>
+<li>Make quality reports with FastQC, and look at a few of them in your browser</li>
+<li>Decide whether everything looks fine, or whether something needs a closer look. For the second case, the tutorial gives a checklist and says who to contact</li>
 </ol>
-<p>You do these steps twice. First with practice data from a real sequencing run with a real problem. For every step, the tutorial tells you what you should see. Then you repeat the same steps with your own data.</p>
+<p>You do these steps twice. First with practice data from a real sequencing run with a real problem. For every step, the tutorial tells you what you should see. Then you can repeat the same steps with your own data.</p>
 </section>
 <section id="before-you-start" class="level2">
 <h2 class="anchored" data-anchor-id="before-you-start">Before you start</h2>
 <p>You need:</p>
 <ul>
-<li><strong>A Crunchomics account, a working terminal, and access to the UvA network</strong> (eduroam or VPN). The <a href="https://ndombrowski.github.io/cli_workshop/source/installation.html">Before you start</a> page of the CLI workshop explains how to get these. Getting an account takes 1 to 3 days, so request it early.</li>
+<li><strong>A Crunchomics account, a working terminal, and access to the UvA network</strong> (eduroam or VPN). The <a href="https://ndombrowski.github.io/cli_workshop/source/installation.html">Before you start</a> page of the CLI workshop explains how to get these. Getting an account takes 1 to 3 days.</li>
 <li><strong>Your data</strong>, or the download link from the sequencing center. You can do the practice round before your data arrives.</li>
 <li><strong>Your sample list</strong> (or sample sheet): which samples you sent, and ideally where each sample was on the plate</li>
 <li><strong>The delivery email</strong> from the sequencing center, with any reports that came with it</li>
 </ul>
-<p>Start with <a href="./source/cli_minimum.html">The commands you need</a>. There you download the practice data and try the few commands you need. It takes about 15 minutes. If you already know the command line well, you can skip to <a href="./source/first_look.html">A first look at your data</a>.</p>
+<p>Start with <a href="./source/cli_minimum.html">The commands you need</a>. There you download the practice data and try the few commands you need to interact with your computer. It takes about 15 minutes. If you already know the command line well, you can skip to <a href="./source/first_look.html">A first look at your data</a>.</p>
 </section>
 <section id="contact" class="level2">
 <h2 class="anchored" data-anchor-id="contact">Contact</h2>
-<p>Email Nina Dombrowski (n.dombrowski@uva.nl) if:</p>
+<p>If you work at IBED you can Email Nina Dombrowski (n.dombrowski@uva.nl) if:</p>
 <ul>
 <li>You get stuck setting up the terminal, your Crunchomics account or the connection</li>
 <li>A command gives an error. Please tell me which step went wrong and copy the exact error message, or add a screenshot.</li>

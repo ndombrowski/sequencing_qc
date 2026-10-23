@@ -16,7 +16,7 @@ If you look at the read numbers in the first week, the problem would have been v
 
 1.  Copy data to Crunchomics, the UvA computer cluster
 2.  Count the reads in every sample, and check for samples with far fewer reads than the rest
-3.  Make a quality report for all samples with FastQC and MultiQC
+3.  Make quality reports with FastQC, and look at a few of them in your browser
 4.  Decide: everything looks fine, or something needs a closer look. For the second case, the tutorial gives a checklist and says who to contact
 
 I wrote this tutorial for researchers at the Institute for Biodiversity and Ecosystem Dynamics (IBED) at the University of Amsterdam, who can get access to Crunchomics, the Genomics Compute Environment for SILS and IBED. For the command-line basics, it builds on the [Introduction to the CLI workshop](https://ndombrowski.github.io/cli_workshop/) and if you want to know more about how to efficiently deal with large amounts of data.
